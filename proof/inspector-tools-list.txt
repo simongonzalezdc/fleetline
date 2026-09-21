@@ -1,0 +1,24 @@
+=== MCP Inspector (official tool) — tools/list ===
+    }
+  ]
+}
+      "name": "fleet_roster",
+      "description": "List the fleet's workers (id, role, status, tasks completed). Use to answer 'who is in the fleet' or 'is anyone busy'.",
+      "name": "fleet_mission_submit",
+      "description": "Dispatch a mission to the agent fleet and get its id immediately. Kind 'briefing' fetches sources, analyzes each in parallel, and composes one report; kind 'audit' checks source health. Omit sources to use the bundled corpus. Follow with fleet_status / fleet_collect.",
+            "description": "What the fleet should accomplish, e.g. 'brief me on today's AI news'"
+            "description": "Mission type"
+            "description": "http(s) URLs or corpus refs: corpus:ai-news (AI news roundup), corpus:coffee-science (Coffee extraction science), corpus:city-cycling (Urban cycling report), corpus:sleep-research (Sleep research notes). Omit for the full corpus."
+      "name": "fleet_status",
+      "description": "Check mission progress. With no missionId, list recent missions. Use to answer 'how is the fleet doing'.",
+      "name": "fleet_collect",
+      "description": "Collect the finished report for a mission. Waits for completion by default (up to 60s) so a single call can submit-and-collect in conversation.",
+            "description": "Wait for completion (up to 60s) instead of returning immediately"
+
+=== inspector tools/call fleet_roster ===
+    {
+      "type": "text",
+      "text": "{\n  \"workers\": [\n    {\n      \"id\": \"fetcher-01\",\n      \"role\": \"fetcher\",\n      \"status\": \"idle\",\n      \"tasksDone\": 2\n    },\n    {\n      \"id\": \"fetcher-02\",\n      \"role\": \"fetcher\",\n      \"status\": \"idle\",\n      \"tasksDone\": 2\n    },\n    {\n      \"id\": \"fetcher-03\",\n      \"role\": \"fetcher\",\n      \"status\": \"idle\",\n      \"tasksDone\": 1\n    },\n    {\n      \"id\": \"fetcher-04\",\n      \"role\": \"fetcher\",\n      \"status\": \"idle\",\n      \"tasksDone\": 1\n    },\n    {\n      \"id\": \"analyst-01\",\n      \"role\": \"analyst\",\n      \"status\": \"idle\",\n      \"tasksDone\": 2\n    },\n    {\n      \"id\": \"analyst-02\",\n      \"role\": \"analyst\",\n      \"status\": \"idle\",\n      \"tasksDone\": 1\n    },\n    {\n      \"id\": \"analyst-03\",\n      \"role\": \"analyst\",\n      \"status\": \"idle\",\n      \"tasksDone\": 1\n    },\n    {\n      \"id\": \"composer-01\",\n      \"role\": \"composer\",\n      \"status\": \"idle\",\n      \"tasksDone\": 2\n    }\n  ]\n}"
+    }
+  ]
+}

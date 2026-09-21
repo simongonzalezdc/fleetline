@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fleetline — Alexa+ fleet command simulator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="mark">◈</span>
+      <div>
+        <h1>Fleetline</h1>
+        <p>simulated Alexa+ experience · commands a local agent fleet over MCP</p>
+      </div>
+    </div>
+    <div class="conn" id="conn">
+      <span class="dot" id="conn-dot"></span><span id="conn-text">connecting…</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="pane chat-pane">
+      <div class="pane-head">
+        <h2>Conversation</h2>
+        <button id="voice-btn" class="voice" title="Toggle voice output (browser speech synthesis)">🔊 voice on</button>
+      </div>
+      <div id="chat" class="chat" aria-live="polite"></div>
+      <div class="chips" id="chips">
+        <button data-say="Brief me on the AI news corpus.">Brief me on the AI news corpus</button>
+        <button data-say="Audit https://example.com and https://devpost.com.">Audit two live URLs</button>
+        <button data-say="How is the mission going?">Mission status</button>
+        <button data-say="Read me the report.">Read the report</button>
+        <button data-say="Who is in the fleet?">Fleet roster</button>
+      </div>
+      <form id="composer" class="composer" autocomplete="off">
+        <input id="utterance" placeholder="Talk to your fleet… e.g. 'brief me on the sleep research corpus'"
+               aria-label="Talk to your fleet" />
+        <button type="submit" id="mic" title="Speak (browser speech recognition)" aria-label="Speak">🎙</button>
+        <button type="submit" class="send">Send</button>
+      </form>
+    </section>
+
+    <section class="pane dash-pane">
+      <div class="pane-head"><h2>Fleet dashboard</h2><span class="sub" id="mission-count">0 missions</span></div>
+      <h3>Workers</h3>
+      <div id="roster" class="roster"></div>
+      <h3>Missions</h3>
+      <div id="missions" class="missions"><p class="empty">No missions yet.</p></div>
+      <h3>Live events</h3>
+      <div id="feed" class="feed"><p class="empty">Waiting for fleet traffic…</p></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      The conversation pane is a stand-in for Alexa+ (per hackathon guidance for builders without
+      device access): a deterministic router picks MCP tools the way the Alexa+ model would.
+      Everything right of it — the fleet, its workers, and every event — is real and runs locally.
+    </p>
+  </footer>
+
+  <script type="module" src="simulator.js"></script>
+</body>
+</html>

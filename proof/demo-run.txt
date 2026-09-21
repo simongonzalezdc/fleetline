@@ -1,0 +1,65 @@
+
+> fleetline@1.0.0 demo
+> node dist/scripts/demo-client.js
+
+fleetline demo client — http://127.0.0.1:3000/mcp
+connected: MCP session established over Streamable HTTP
+server exposes 5 tools: fleet_roster, fleet_mission_submit, fleet_status, fleet_collect, fleet_cancel
+
+dispatching briefing mission on the bundled corpus (fully offline)…
+mission away: m-001 across 4 sources; live fleet events below
+
+  [fleet] mission_created   "demo briefing: what does the corpus say" (4 sources)
+  [fleet] mission_started   
+  [fleet] task_started      fetcher-01 fetch AI news roundup
+  [fleet] task_started      fetcher-02 fetch Coffee extraction science
+  [fleet] task_started      fetcher-03 fetch Urban cycling report
+  [fleet] task_started      fetcher-04 fetch Sleep research notes
+  [fleet] task_completed    fetcher-01 fetch AI news roundup
+  [fleet] task_completed    fetcher-02 fetch Coffee extraction science
+  [fleet] task_completed    fetcher-03 fetch Urban cycling report
+  [fleet] task_completed    fetcher-04 fetch Sleep research notes
+  [fleet] task_started      analyst-01 analyze AI news roundup
+  [fleet] task_started      analyst-02 analyze Coffee extraction science
+  [fleet] task_started      analyst-03 analyze Urban cycling report
+  [fleet] task_started      analyst-01 analyze Sleep research notes
+  [fleet] task_completed    analyst-01 analyze AI news roundup
+  [fleet] task_completed    analyst-02 analyze Coffee extraction science
+  [fleet] task_completed    analyst-03 analyze Urban cycling report
+  [fleet] task_completed    analyst-01 analyze Sleep research notes
+  [fleet] task_started      composer-01 compose briefing
+  [fleet] task_completed    composer-01 compose briefing
+  [fleet] mission_completed "demo briefing: what does the corpus say" in 8ms
+
+mission m-001: completed (9ms)
+
+----- report -----
+
+Fleet briefing: demo briefing: what does the corpus say
+
+4 of 4 sources analyzed by the fleet (686 words total).
+
+Terms repeated across sources: cost.
+
+- The Wednesday AI Roundup: Agents Go Mainstream (AI news roundup) — 177 words, 1 min read. Keywords: fleets, workers, agent, cost, mission.
+  * Agent fleets moved from research demos to production workflows this quarter, and three shifts explain most of the momentum.
+  * First, orchestration frameworks standardized around open protocols, which let a supervisor agent delegate work to specialized workers built by different teams.
+  * Companies running these fleets report that the bottleneck moved from model quality to task routing: deciding which worker gets which job, and how results are merged.
+- Extraction Science: Why Grind Size Controls Everything (Coffee extraction science) — 170 words, 1 min read. Keywords: grind, coffee, compounds, acids, bitter.
+  * Coffee extraction is a diffusion problem, and grind size is the dial that controls the rate.
+  * Water pulls flavor compounds out of coffee particles at different speeds: acids first, then sugars, then the bitter compounds that arrive late.
+  * A fine grind presents more surface area, so extraction races through all three phases in seconds; a coarse grind spreads the same journey over minutes.
+- City Cycling Report: Protected Lanes Pay for Themselves (Urban cycling report) — 170 words, 1 min read. Keywords: lanes, protected, bike, corridors, cost.
+  * Cities that built protected bike lanes saw measurable returns within three years, according to a review of a dozen North American programs.
+  * The mechanism is unglamorous: painted lanes were ignored by drivers and avoided by riders, while physical separation changed behavior on day one.
+  * Ridership on protected corridors typically doubled, and the new riders skewed toward women, older residents, and parents with children, groups that surveys had consistently labeled interested but frightened.
+- Sleep Notes: Consistency Beats Duration (Sleep research notes) — 169 words, 1 min read. Keywords: sleep, bedtime, hour, jet, lag.
+  * Sleep researchers have converged on an inconvenient finding: a consistent schedule helps more than an extra hour on weekends.
+  * The body's circadian system treats irregular sleep like repeated jet lag, and late weekend mornings shift Monday's internal clock late enough that researchers gave it a name, social jet lag.
+  * Studies tracking thousands of wearable users found that variance in bedtime predicted daytime grogginess better than average duration did.
+
+Composited by a composer worker from analyst outputs above.
+
+------------------
+
+mission board: [{"id":"m-001","status":"completed"}]
