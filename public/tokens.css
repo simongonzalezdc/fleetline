@@ -1,0 +1,225 @@
+/* ============================================================
+   Fleetline design tokens — the ONE tokens file.
+   Architecture (docs/DESIGN-SYSTEM.md): a TWO-MODE system.
+     :root                shared scales + OPS (dark mode, default)
+     [data-theme="press"] PRESS (light mode) — token remap only
+   CEO rulings 2026-09-25 (verbatim):
+     "i like your second design with the yellow. so don't forget
+      about it"  → Ops is the register of record (default).
+     "press is a good start to a light theme but it must be
+      aligned to seem of a pair with ops" → Press = light half.
+     "remove signal its messy to have a random third style"
+                   → exactly two modes; Signal deleted.
+   Laws: components consume SEMANTIC tokens only; modes re-map
+   tokens only; every published stop has a real build job.
+   ============================================================ */
+
+:root {
+  /* ---------- shared scales ---------- */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+  --step--2: 0.75rem;     /* 12px micro floor */
+  --step--1: 0.8125rem;   /* 13px rows */
+  --step-0: 0.9375rem;    /* 15px chat/body */
+  --step-1: 1rem;         /* 16px */
+  --step-2: 1.125rem;     /* 18px pane heads (press) */
+  --step-3: 1.3125rem;    /* 21px stat numerals — register lever */
+  --step-4: 1.0625rem;    /* 17px boxed wordmark */
+  --step-5: 1.5rem;       /* 24px brand wordmark (press) */
+  --measure: 68ch;
+
+  --dur-fast: 120ms; --dur-base: 180ms; --dur-slow: 240ms;
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --pulse-period: 1.2s;
+  --icon-size: 16px; --icon-size-sm: 12px;
+
+  /* ---------- OPS primitives (register of record) ----------
+     Brand accent of record: amber phosphor (oklch(0.78 0.16 75) family). */
+  --brand-400: #ffb000;   /* phosphor: assistant identity + primary fill */
+  --brand-500: #ffb000;
+  --brand-600: #ffc233;   /* hover step */
+  --accent-400: #4dd0e1;  /* operator cyan (the other side of the transcript) */
+  --neutral-950: #07090c; --neutral-900: #0b0e12;
+  --neutral-100: #c8cdbc; --neutral-50: #e8e4d8;
+
+  /* ---------- OPS semantics (what components use) ---------- */
+  --color-bg: var(--neutral-950);
+  --color-surface-1: var(--neutral-900);        /* pane panel */
+  --color-surface-2: #0d1116;                  /* cells */
+  --color-surface-head: #0a0d11;
+  --color-text: var(--neutral-50);
+  --color-text-muted: #8b93a1;
+  --color-text-label: var(--neutral-100);
+  --color-border: #1a202a;
+  --color-border-strong: #2a323e;
+  --color-primary: var(--brand-500);            /* primary action fill */
+  --color-primary-hover: var(--brand-600);
+  --color-primary-ink: #14100a;                /* ink on amber, 5+:1 */
+  --color-accent: #ffb000;                     /* assistant speaks phosphor */
+  --color-accent-2: #4dd0e1;                   /* operator speaks cyan */
+  --color-focus: #ffb000;
+  --color-success: #3ddc84;
+  --color-error: #ff5252;
+  --color-warning: #ffcf40;
+  --color-info: #ffb000;                       /* busy = phosphor */
+  --color-info-halo: rgb(255 176 0 / 0.22);
+  --color-success-halo: rgb(61 220 132 / 0.2);
+  --color-feed-time: #7d8698;
+
+  --font-display: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-body: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-num: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-control: 2px; --radius-card: 3px; --radius-tag: 2px;
+  --radius-badge: 2px; --radius-msg: 2px; --radius-bar: 0;
+  --shadow-card: none;
+
+  /* material tokens (flat instrument) */
+  --canvas-layers:
+    linear-gradient(rgb(255 255 255 / 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.022) 1px, transparent 1px);
+  --canvas-size: 28px 28px;            /* instrument grid pitch */
+  --mark-glow: none;
+  --stat-led: var(--color-success);    /* LED dot on stat cells */
+  --bar-track-image: repeating-linear-gradient(90deg, #1a202a 0 6px, transparent 6px 8px);
+  --bar-fill-image: repeating-linear-gradient(90deg, var(--color-info) 0 6px, rgb(255 176 0 / 0.25) 6px 8px);
+  --scroll-thumb: #2a323e;
+
+  /* density: compact instrument */
+  --pad-head: 0; --brand-pad: 8px 14px; --head-cell-pad: 8px 14px;
+  --head-rule: 1px solid #1c222b; --head-cell-bg: #0d1116;
+  --pad-main: 12px 12px; --gap-main: 12px; --grid-cols: minmax(0, 58fr) minmax(0, 42fr);
+  --pad-panehead: 8px 12px;
+  --pad-chat: 12px; --chat-gap: 8px;
+  --msg-pad: 4px 8px; --msg-tail: 0;
+  --gap-stat: 8px; --pad-stat: 12px 12px 0;
+  --pad-sec: 0 12px; --sec-gap: 12px; --sec-rule: 1px;
+  --roster-cols: repeat(2, minmax(0, 1fr)); --gap-rolegroup: 12px;
+  --pad-foot: 8px 12px;
+  --feed-h: 15rem;
+
+  /* labels: uppercase tracked mono */
+  --tt-label: uppercase; --ls-label: 0.14em;
+  --h3-rule: 0 solid transparent;
+  --stats-rule: 0 solid transparent;
+  --foot-rule: 0 solid transparent;
+
+  /* chat material: console transcript (no bubbles) */
+  --msg-user-rail-w: 2px;
+  --msg-user-rail-c: #4dd0e1;
+  --msg-alexa-rail-w: 2px;
+  --msg-alexa-rail-c: #ffb000;
+  --msg-frame-pad: 0 0 0 8px;
+  --input-bg: #0d1116;
+  --input-border-w: 1px;
+  --input-line: #2a323e;
+
+  /* data viz */
+  --chart-grid: #1a202a;
+
+  color-scheme: dark;
+}
+
+/* ============================================================
+   PRESS — the LIGHT HALF of the Ops-Press pair (CEO amendment
+   #2: "press is a good start to a light theme but it must be
+   aligned to seem of a pair with ops").
+   Pairing law: same design language as Ops — identical anatomy,
+   grid, component specs, mono-first instrument DNA, boxed header
+   cells, LED stat dots, transcript chat. The light plane keeps
+   the print soul as MATERIAL: warm paper ground, ink text, serif
+   reserved for exactly two surfaces (the masthead wordmark and
+   folio stat numerals), hairline ink rules, zero radius.
+   Amber is the brand accent in both planes: fills stay phosphor
+   amber with ink text; TEXT accents use the deep-amber plane
+   variant (contrast-verified against paper).
+   ============================================================ */
+
+[data-theme="press"] {
+  /* primitives — same hue families as Ops, plane-adjusted lightness */
+  --brand-400: #8a5c00;   /* deep amber: accent TEXT on paper (plane variant) */
+  --brand-500: #ffb000;   /* phosphor amber fills (same as Ops) */
+  --brand-600: #d99c00;
+  --accent-400: #0e7490;  /* operator cyan, deep plane variant */
+  --neutral-950: #1c1a15; /* ink */
+  --neutral-900: #f6f4ee; /* paper */
+  --neutral-100: #6d6a5f;
+  --neutral-50: #1c1a15;
+
+  /* semantics (ink on paper) */
+  --color-bg: #f6f4ee;
+  --color-surface-1: #fbfaf6;          /* raised paper panel (paired with Ops panel) */
+  --color-surface-2: #f1eee5;          /* paper cell */
+  --color-surface-head: #f6f4ee;
+  --color-text: #1c1a15;
+  --color-text-muted: #6d6a5f;
+  --color-text-label: #1c1a15;
+  --color-border: #ddd8ca;
+  --color-border-strong: #1c1a15;
+  --color-primary: var(--brand-500);    /* amber action fill — the pair's brand action */
+  --color-primary-hover: var(--brand-600);
+  --color-primary-ink: #14100a;        /* ink on amber (same pair as Ops) */
+  --color-accent: #8a5c00;             /* assistant speaks deep amber on paper */
+  --color-accent-2: #0e7490;           /* operator speaks deep cyan */
+  --color-focus: #8a5c00;              /* deep amber ring, ≥3:1 on paper */
+  --color-success: #135e3e;
+  --color-error: #b3362b;
+  --color-warning: #8a5c00;
+  --color-info: #8a5c00;               /* busy = amber family in both planes */
+  --color-info-halo: rgb(138 92 0 / 0.16);
+  --color-success-halo: rgb(19 94 62 / 0.15);
+  --color-feed-time: #6f6a5c;
+
+  /* mono-first DNA shared with Ops; serif ONLY for masthead + folio numerals */
+  --font-display: "New York", ui-serif, Georgia, "Times New Roman", serif;
+  --font-body: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-num: "New York", ui-serif, Georgia, serif;
+
+  --step-3: 1.875rem;                 /* 30px folio numerals */
+  --step-4: 1.5rem;                   /* 24px serif masthead */
+  --radius-control: 0; --radius-card: 0; --radius-tag: 0;
+  --radius-badge: 0; --radius-msg: 0; --radius-bar: 0;
+  --shadow-card: none;
+
+  /* materials: flat print instrument */
+  --canvas-layers: none;
+  --canvas-size: auto;
+  --stat-led: var(--color-info);      /* LED parity: amber LED on paper */
+  --bar-track-image: none; --bar-fill-image: none;   /* solid ink-amber bar (material diff, same geometry) */
+  --scroll-thumb: #cfc9b9;
+
+  /* density: same compact instrument frame as Ops (paired grid) */
+  --pad-head: 0; --brand-pad: 8px 14px; --head-cell-pad: 8px 14px;
+  --head-rule: 1px solid #d9d4c6; --head-cell-bg: #f1eee5;   /* boxed header parity */
+  --pad-main: 12px 12px; --gap-main: 12px; --grid-cols: minmax(0, 58fr) minmax(0, 42fr);
+  --pad-panehead: 8px 12px;
+  --pad-chat: 12px; --chat-gap: 8px;
+  --msg-pad: 4px 8px; --msg-tail: 0;
+  --gap-stat: 8px; --pad-stat: 12px 12px 0;
+  --pad-sec: 0 12px; --sec-gap: 12px; --sec-rule: 1px;
+  --roster-cols: repeat(2, minmax(0, 1fr)); --gap-rolegroup: 12px;
+  --pad-foot: 8px 12px;
+
+  /* labels: same uppercase tracked mono instrument labels as Ops */
+  --tt-label: uppercase; --ls-label: 0.14em;
+  --h3-rule: 1px solid #1c1a15;       /* interior ink rules = print soul */
+  --stats-rule: 2px solid #1c1a15;
+  --foot-rule: 2px solid #1c1a15;
+
+  /* chat material: console transcript parity (rails, no bubbles) */
+  --msg-user-rail-w: 2px;
+  --msg-user-rail-c: #0e7490;
+  --msg-alexa-rail-w: 2px;
+  --msg-alexa-rail-c: #8a5c00;
+  --msg-frame-pad: 0 0 0 8px;
+  --input-bg: #fbfaf6;
+  --input-border-w: 1px;
+  --input-line: #c9c3b2;
+
+  --chart-grid: #e3ded1;
+
+  color-scheme: light;
+}

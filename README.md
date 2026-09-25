@@ -34,10 +34,10 @@ transport** (spec 2025-11-25) and **Agent Skills**.
   device access): a browser page that is itself a real MCP client — the
   official SDK client over Streamable HTTP — with an Alexa-style conversation
   pane, voice in/out (Web Speech API), and a live fleet dashboard. The
-  interface ships one default design — **Signal** (dark product-glass) —
-  plus two alternate themes for comparison: `?theme=ops` (amber operations
-  console) and `?theme=press` (light editorial broadsheet). All three are
-  WCAG-contrast audited; video/README screenshots use the default.
+  interface ships one design system in two modes — **Ops** (default: dark,
+  amber operations console) and **Press** (`?theme=press`: the light,
+  paper-and-ink half of the same pair). Both modes are WCAG-contrast
+  audited; video/README screenshots use the default.
 - **Agent Skill** (`skills/fleet-operator/`): standards-compliant
   `SKILL.md` packaging that teaches any Agent-Skills-compatible agent how to
   operate the fleet, with voice-shaped response guidance.
