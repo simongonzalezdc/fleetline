@@ -25,9 +25,11 @@ transport** (spec 2025-11-25) and **Agent Skills**.
   stateful sessions, using the official TypeScript SDK.
 - **A real fleet engine**: role-specialized workers (4 fetchers, 3 analysts,
   1 composer) run each mission as a parallel pipeline — fetch sources, analyze
-  documents with local NLP (TF sentence ranking, keyword extraction), compose
-  one report. Missions: `briefing` (research synthesis) and `audit` (source
-  health). Zero paid APIs, zero API keys; runs entirely on your machine.
+  documents with local NLP (TF sentence ranking, keyword extraction, weighted
+  toward the brief's subject terms so different briefs yield different
+  reports), compose one report. Missions: `briefing` (research synthesis) and
+  `audit` (source health). Zero paid APIs, zero API keys; runs entirely on
+  your machine.
 - **Live progress**: every fleet state change streams to the client as an MCP
   `notifications/message` logging notification on the session's SSE stream.
 - **Alexa+ web simulator** (sanctioned by the track for builders without

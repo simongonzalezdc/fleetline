@@ -4,6 +4,7 @@
  * report reflects real work done by the fleet, not canned text.
  */
 
+import { goalTerms } from "../nlp.js";
 import type { DocAnalysis, FetchResult, MissionKind } from "../types.js";
 
 export function composeReport(
@@ -29,13 +30,25 @@ function composeBriefing(goal: string, fetches: FetchResult[], analyses: DocAnal
   );
   lines.push("");
 
+  const goals = goalTerms(goal);
+  if (goals.length > 0) {
+    lines.push(`Brief focus terms: ${goals.join(", ")}.`);
+    lines.push("");
+  }
+
+  const goalSet = new Set(goals);
   const globalKeywords = new Map<string, number>();
   for (const a of analyses) {
     for (const k of a.keywords) globalKeywords.set(k, (globalKeywords.get(k) ?? 0) + 1);
   }
   const shared = [...globalKeywords.entries()]
     .filter(([, n]) => n >= 2)
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .sort(
+      (a, b) =>
+        Number(goalSet.has(b[0])) - Number(goalSet.has(a[0])) ||
+        b[1] - a[1] ||
+        a[0].localeCompare(b[0])
+    )
     .slice(0, 6)
     .map(([w]) => w);
   if (shared.length > 0) {

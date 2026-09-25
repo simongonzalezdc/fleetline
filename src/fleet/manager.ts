@@ -233,7 +233,7 @@ export class FleetManager {
       const good = mission.fetches.filter((f) => f.ok && f.text.length > 200);
       const analyses = await Promise.all(
         good.map((f) =>
-          this.runTask(mission, "analyst", `analyze ${f.source.label}`, async () => analyzeDocument(f))
+          this.runTask(mission, "analyst", `analyze ${f.source.label}`, async () => analyzeDocument(f, mission.goal))
         )
       );
       if (this.cancelled(mission)) return;
