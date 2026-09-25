@@ -1,0 +1,133 @@
+/* ============================================================
+   Theme OPS — amber operations console.
+   Mission-control register: flat near-black, hairline instrument
+   grid, amber phosphor accents, monospace-first typography,
+   boxed header cells, zero radius.
+   ============================================================ */
+
+[data-theme="ops"] {
+  --bg: #07090c;
+  --panel: #0b0e12;
+  --panel-border: 1px solid #1c222b;
+  --line: #1a202a;
+  --text: #e8e4d8;
+  --muted: #8b93a1;
+  --label: #c8cdbc;
+
+  --accent: #ffb000;          /* amber phosphor */
+  --accent-2: #4dd0e1;
+  --ok: #3ddc84;   --ok-line: rgba(61, 220, 132, 0.5);  --ok-bg: rgba(61, 220, 132, 0.08);  --ok-halo: rgba(61, 220, 132, 0.2);  --ok-text: #3ddc84;
+  --warn: #ffcf40; --warn-line: rgba(255, 207, 64, 0.5); --warn-bg: rgba(255, 207, 64, 0.08);
+  --bad: #ff5252;  --bad-line: rgba(255, 82, 82, 0.5);  --bad-bg: rgba(255, 82, 82, 0.10);
+  --busy: #ffb000; --busy-line: rgba(255, 176, 0, 0.55); --busy-bg: rgba(255, 176, 0, 0.09); --busy-halo: rgba(255, 176, 0, 0.22);
+  --focus: #ffb000;
+
+  --font-body: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-display: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-num: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --fs-brand: 17px; --fs-micro: 12px; --fs-label: 11.5px; --fs-chat: 13.5px;
+  --fs-tool: 11.5px; --fs-worker: 12.5px; --fs-feed: 11px; --fs-stat: 21px;
+  --fw-display: 700; --fw-label: 700; --ls-brand: 0.04em;
+  --tt-label: uppercase; --ls-label: 0.14em;
+
+  --mark-size: 28px;
+  --r-panel: 3px; --r-ctl: 2px; --r-msg: 2px; --r-chip: 2px;
+  --r-tag: 2px; --r-stat: 2px; --r-badge: 2px; --r-bar: 0px;
+
+  --cols: minmax(0, 58fr) minmax(0, 42fr);
+  --gap-main: 12px; --pad-main: 12px 14px 10px;
+  --pad-head: 0;
+  --head-bg: #0a0d11;
+  --panehead-bg: #0d1116;
+  --foot-bg: #0a0d11;
+  --pad-panehead: 10px 14px;
+  --pad-chat: 14px; --chat-gap: 8px; --msg-max: 100%;
+  --pad-msg: 6px 10px;
+
+  --tag-fg: #ffb000; --tag-line: rgba(255, 176, 0, 0.45); --tag-bg: rgba(255, 176, 0, 0.07);
+
+  --voice-fg: #ffb000; --voice-bg: rgba(255, 176, 0, 0.08); --voice-line: rgba(255, 176, 0, 0.45);
+
+  --user-bg: rgba(77, 208, 225, 0.08); --user-line: rgba(77, 208, 225, 0.35); --user-fg: #d9f4f8;
+  --alexa-bg: transparent; --alexa-line: transparent;
+  --alexa-rail: 2px; --who-alexa: #ffb000; --r-msg-tail: 2px;
+
+  --tool-bg: rgba(255, 176, 0, 0.05); --tool-line: rgba(255, 176, 0, 0.3);
+  --tool-fg: #c9c4b4; --tool-tag-fg: #ffb000; --tool-tag-line: rgba(255, 176, 0, 0.45);
+  --tool-name-fg: #efe9d8;
+
+  --chip-bg: transparent; --chip-fg: #b8bfa9; --chip-line: #2a323e;
+
+  --input-bg: #0d1116; --input-border: 1px solid #2a323e;
+  --send-bg: #ffb000; --send-fg: #14100a; --send-line: #ffb000;
+  --send-hover: brightness(1.12);
+
+  --gap-stat: 6px; --pad-stat: 12px 14px 0;
+  --stat-bg: #0d1116; --stat-border: 1px solid #1c222b;
+  --stat-fg: #f2eee2; --fw-stat: 700;
+
+  --pad-sec: 0 14px; --sec-gap: 10px; --sec-rule: 1px;
+  --roster-cols: repeat(2, minmax(0, 1fr)); --gap-rolegroup: 10px;
+  --worker-bg: #0d1116; --worker-border: 1px solid #1a202a;
+  --mission-bg: #0d1116; --mission-border: 1px solid #1a202a;
+  --bar-track: #1a202a; --bar-fill: #ffb000;
+
+  --feed-h: 240px; --feed-rule: rgba(26, 32, 42, 0.6); --feed-t: #7d8698;
+
+  --pad-foot: 9px 14px;
+  --scroll-thumb: #2a323e;
+
+  color-scheme: dark;
+}
+
+/* faint instrument grid on the canvas */
+[data-theme="ops"] body {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* boxed instrument header: cells separated by rules */
+[data-theme="ops"] .app-head { padding: 0; align-items: stretch; }
+[data-theme="ops"] .brand { padding: 10px 14px; }
+[data-theme="ops"] .head-right {
+  border-left: 1px solid #1c222b;
+  padding: 10px 14px;
+  background: #0d1116;
+}
+[data-theme="ops"] .brand-text p { letter-spacing: 0.05em; text-transform: uppercase; font-size: 10px; }
+
+/* console transcript: no bubbles, timestamped lines */
+[data-theme="ops"] .msg { border-radius: 0; }
+[data-theme="ops"] .msg.user { border-left: 2px solid #4dd0e1; padding-left: 10px; }
+[data-theme="ops"] .msg.alexa { padding-left: 10px; }
+[data-theme="ops"] .msg .who::before { content: "["; color: var(--muted); }
+[data-theme="ops"] .msg .who::after { content: "]"; color: var(--muted); }
+[data-theme="ops"] .msg.alexa .who { color: #ffb000; }
+[data-theme="ops"] .msg.alexa .who::before, [data-theme="ops"] .msg.alexa .who::after { color: #ffb000; }
+
+/* LED-lit stat cells */
+[data-theme="ops"] .stat { position: relative; }
+[data-theme="ops"] .stat::before {
+  content: ""; position: absolute; top: 9px; right: 9px;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--ok); box-shadow: 0 0 6px var(--ok);
+}
+[data-theme="ops"] .stat.busy-live::before { background: var(--busy); box-shadow: 0 0 6px var(--busy); }
+
+/* segmented progress bar */
+[data-theme="ops"] .mission .bar {
+  height: 8px;
+  background: repeating-linear-gradient(90deg, #1a202a 0 6px, transparent 6px 8px);
+}
+[data-theme="ops"] .mission .bar .fill {
+  background: repeating-linear-gradient(90deg, var(--bar-fill) 0 6px, rgba(255, 176, 0, 0.25) 6px 8px);
+}
+
+[data-theme="ops"] .pane { box-shadow: none; }
+[data-theme="ops"] .chips button { text-transform: none; }
+[data-theme="ops"] .composer input { border-radius: 0; }
+[data-theme="ops"] .badge { border-radius: 0; }
