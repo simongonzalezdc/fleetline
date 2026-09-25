@@ -517,6 +517,9 @@ if (SR) {
 }
 
 void connect().then(async () => {
+  // refresh AFTER the session is live — the old cold-load order left the missions
+  // pane skeleton-hung because refreshBoard raced (and lost to) connect().
+  void refreshBoard();
   // ?autodemo=1: run one hands-free mission on load (demo video / screenshot path).
   if (new URLSearchParams(window.location.search).has("autodemo")) {
     await new Promise((r) => setTimeout(r, 600));
@@ -525,4 +528,3 @@ void connect().then(async () => {
     await handleUtterance("Read me the report.");
   }
 });
-void refreshBoard();
