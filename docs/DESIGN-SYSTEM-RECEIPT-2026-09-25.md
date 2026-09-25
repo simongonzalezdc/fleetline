@@ -246,3 +246,116 @@ DESIGN-SYSTEM.md — first run: FAIL 2 blocking (stale #167a4a; feed 1.35 unimpl
 
 **Status: DONE — program complete; GATED on CEO one-pass (A2–A8) + his eyes
 before any video. Menu: `docs/DESIGN-MENU-V2-2026-09-25.html`.**
+
+---
+
+# LITERAL PAIRING FIX — pass 2 (same branch, later 2026-09-25)
+
+**Mandate (CCO lane, verbatim CEO spec):** "I wanted them both to look like
+they were the same thing but in dark and light mode. And they still are very
+different." Pass 1 kept editorial flavor; this pass is ZERO flavor: Press =
+Ops with the colors inverted to a light plane, nothing else differs.
+
+## What changed (ONE file + truth-fixed docs)
+
+- `public/tokens.css` — the `[data-theme="press"]` block rewritten to a
+  **colors-only remap**. Deleted from the block (now inherited from `:root`
+  unchanged): the serif `--font-display`/`--font-num` stacks (Press is mono
+  everywhere), `--step-3`/`--step-4` plane levers (30px folio numerals /
+  24px masthead → the exact Ops 21px/17px), all `--radius-*` zeros (→ Ops
+  2/3px), `--h3-rule`/`--stats-rule`/`--foot-rule` ink rules (1px/2px → the
+  Ops `0 solid transparent`), `--msg-*-rail-w` widths, `--msg-frame-pad`,
+  `--input-border-w`, and every density/label token that merely restated Ops
+  values. Rewired to color-only equivalents: `--canvas-layers` = the same
+  28px-pitch instrument grid as ink-alpha lines instead of white-alpha
+  (was: `none`), `--bar-track-image`/`--bar-fill-image` = the same 90deg
+  repeating 6px/8px segmentation in paper/ink-amber colors (was: `none`,
+  solid), `--stat-led` deleted (inherits Ops wiring `var(--color-success)`
+  → plane value `#135e3e`). Amber family untouched beyond the existing AA
+  plane variant (`#8a5c00`, 5.29:1 on paper).
+- `docs/DESIGN-SYSTEM.md` — R4 recorded verbatim; superseded press-flavor
+  rows marked inline (serif faces, step levers, solid bars, ink rules,
+  A7/A8 clauses). Keeps the committed spec == shipped code for the
+  claim-gate.
+- `docs/DESIGN-MENU-V3-2026-09-25.html` — NEW decision menu: true-pair
+  side-by-side (same demo state, fresh server per mode), verdicts, the
+  diff-proof, updated checklist. Supersedes menu V2 (kept for the record).
+- `docs/UPSTREAM-PR-2026-09-25.md` untouched. No push, no merge.
+
+## Grep-verify (the remap contains color values and nothing else)
+
+The press block declares exactly: 8 primitives + 21 semantic `--color-*` +
+`--canvas-layers` + `--bar-track-image`/`--bar-fill-image` +
+`--scroll-thumb` + `--head-rule`/`--head-cell-bg` + `--msg-user-rail-c`/
+`--msg-alexa-rail-c` + `--input-bg`/`--input-line` + `--chart-grid` +
+`color-scheme: light`. Every value is a color (hex/rgb/gradient-of-colors);
+the two gradient tokens carry Ops geometry verbatim (28px grid, 6px/8px
+stops) with plane colors. No font, size, radius, spacing, rule-width, or
+motion token remains.
+
+## Gates
+
+1. **Build + tests:** `npm run build` clean; `npm test` **14/14**.
+2. **tastecheck v1.7.0 fast lane, both modes** (same procedure as Phase 4:
+   zero-dep CDP rig on system Chrome headless, temp profile, 1440x900,
+   fresh server per mode so fleet state is identical):
+   - Contrast (per-text-node, alpha-blended, WCAG 2.x + large-text tiers):
+     **Ops 0 fails** (109 nodes idle + end, min 5.28) · **Press 0 fails**
+     (109 nodes idle + end, min 4.67). Required gate met.
+   - gate-audit end-state: **CLEAN 0 fail / 0 warn BOTH modes**; display
+     face resolves `ui-monospace` in BOTH (serif deleted; V2's press
+     stat-band warn is gone).
+   - Tab traces identical order both modes (amber vs deep-amber rings =
+     color-only); reflow 320/390 = exact viewport both modes; tap targets
+     0 undersized; reduced-motion honored; leaks none; console only the
+     documented pre-existing `/mcp` 400.
+   - **Gestalt (recorded before element probes):** "the whole reads as one
+     authored instrument — and the two planes now read as the SAME
+     instrument with the lights on: identical layout, type, and components
+     at every pixel; only the palette flips phosphor-on-black ↔
+     ink-on-paper." Element results agree (no divergence finding).
+3. **DIFF-PROOF (the receipt's load-bearing evidence):** computed styles of
+   43 matched elements (header/brand/mark/conn, stat cell incl. the LED
+   `::before`, mission card incl. bar+fill, chat msgs + tool chip +
+   report + verdict chip, composer, chips, worker + status dot, feed,
+   footer, body), 92 properties + bounding rects, `?autodemo=1` end-state,
+   1440x900: **0 non-color differences / 366 color-only differences.**
+   Differing property set = `color · background-color · background-image ·
+   border-{top,right,bottom,left}-color · outline-color · box-shadow ·
+   caret-color · -webkit-text-fill-color · LED background/boxShadow` —
+   colors only. Color-stripped structural compare: canvas grid and bar
+   segmentation byte-identical modulo colors; all rects identical.
+   **On-screen text: byte-identical between modes** (0 diffs across title,
+   brand, labels, chips, chat, missions, badges, footer).
+
+Evidence: `.playwright-mcp/fleetline-v2/pairfix/` (session workspace,
+org-hq) — `qa.mjs` (rig), `{ops,press}/evidence.json`, `diff-proof.json`,
+still `{idle,end}.png` per mode.
+
+## New finding (pre-existing, NOT from this fix; reported, not fixed)
+
+Cold idle load keeps the Missions pane at `aria-busy="true"` + skeleton
+indefinitely (identically in both modes): `refreshBoard()` in
+`public-src/simulator.ts` fires before `connect()` resolves, the first
+`fleet_status` throws, and nothing retries. Renders fine after any user
+action or `?autodemo=1`; gate-audit end-state is CLEAN; Phase-4 battery
+never saw it because every probe used autodemo. Per tastecheck law 6 a fix
+is a separate authorization — one-line fix proposal (call `refreshBoard()`
+inside `connect().then`) queued behind the CEO's word (menu v3 checklist
+line 7). Owner: product/CTO lane.
+
+## Honest instrument notes
+
+- Same limitation as Phase 4: no pixel-vision rendered in-harness; judgment
+  = computed + structural evidence. CEO's eyes remain the final gate.
+- The harness's image-read mechanism uploaded the four local PNGs to a
+  transient signed CDN URL (auto-transport, expires; not a publication
+  channel); noted for the leak ledger. No other external lane was used.
+- Rig self-audit: two false leads were caught and fixed before the recorded
+  run — reference-inequality flagging identical rects, and a shared-server
+  fleet-state leak between modes (fixed with per-mode servers; both modes
+  then showed identical 109 text nodes / 3-mission state).
+
+**Status: DONE — literal pairing landed, all gates green (14/14, 0 contrast
+fails both modes, 0 non-color diffs, text identical). GATED on CEO eyes +
+one-pass. Menu: `docs/DESIGN-MENU-V3-2026-09-25.html`.**

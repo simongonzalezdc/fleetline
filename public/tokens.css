@@ -23,10 +23,10 @@
   --step--1: 0.8125rem;   /* 13px rows */
   --step-0: 0.9375rem;    /* 15px chat/body */
   --step-1: 1rem;         /* 16px */
-  --step-2: 1.125rem;     /* 18px pane heads (press) */
+  --step-2: 1.125rem;     /* 18px pane heads (reserved rung) */
   --step-3: 1.3125rem;    /* 21px stat numerals — register lever */
   --step-4: 1.0625rem;    /* 17px boxed wordmark */
-  --step-5: 1.5rem;       /* 24px brand wordmark (press) */
+  --step-5: 1.5rem;       /* 24px brand wordmark (reserved rung) */
   --measure: 68ch;
 
   --dur-fast: 120ms; --dur-base: 180ms; --dur-slow: 240ms;
@@ -123,18 +123,20 @@
 }
 
 /* ============================================================
-   PRESS — the LIGHT HALF of the Ops-Press pair (CEO amendment
-   #2: "press is a good start to a light theme but it must be
-   aligned to seem of a pair with ops").
-   Pairing law: same design language as Ops — identical anatomy,
-   grid, component specs, mono-first instrument DNA, boxed header
-   cells, LED stat dots, transcript chat. The light plane keeps
-   the print soul as MATERIAL: warm paper ground, ink text, serif
-   reserved for exactly two surfaces (the masthead wordmark and
-   folio stat numerals), hairline ink rules, zero radius.
-   Amber is the brand accent in both planes: fills stay phosphor
-   amber with ink text; TEXT accents use the deep-amber plane
-   variant (contrast-verified against paper).
+   PRESS — the LIGHT HALF of the Ops-Press pair. CEO words
+   2026-09-25 (verbatim): "I wanted them both to look like they
+   were the same thing but in dark and light mode. And they
+   still are very different."
+   LITERAL PAIRING LAW: Press is Ops with the colors inverted to
+   a light plane — NOTHING else differs. This remap declares
+   COLOR VALUES ONLY (paper ground, ink text, light-plane
+   borders/halos, plane-adjusted state colors, amber accent
+   deepened only as far as AA contrast on paper requires — same
+   hue family). Every token not listed here is inherited from
+   :root unchanged: fonts (mono everywhere), type scale, radii,
+   spacing, density, grid, rule widths, motion, materials (the
+   instrument grid and repeating bar pattern keep their exact
+   Ops geometry, re-colored per plane).
    ============================================================ */
 
 [data-theme="press"] {
@@ -172,51 +174,20 @@
   --color-success-halo: rgb(19 94 62 / 0.15);
   --color-feed-time: #6f6a5c;
 
-  /* mono-first DNA shared with Ops; serif ONLY for masthead + folio numerals */
-  --font-display: "New York", ui-serif, Georgia, "Times New Roman", serif;
-  --font-body: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
-  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
-  --font-num: "New York", ui-serif, Georgia, serif;
-
-  --step-3: 1.875rem;                 /* 30px folio numerals */
-  --step-4: 1.5rem;                   /* 24px serif masthead */
-  --radius-control: 0; --radius-card: 0; --radius-tag: 0;
-  --radius-badge: 0; --radius-msg: 0; --radius-bar: 0;
-  --shadow-card: none;
-
-  /* materials: flat print instrument */
-  --canvas-layers: none;
-  --canvas-size: auto;
-  --stat-led: var(--color-info);      /* LED parity: amber LED on paper */
-  --bar-track-image: none; --bar-fill-image: none;   /* solid ink-amber bar (material diff, same geometry) */
+  /* materials — exact Ops geometry, plane-colored */
+  --canvas-layers:
+    linear-gradient(rgb(28 26 21 / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(28 26 21 / 0.03) 1px, transparent 1px);
+  --bar-track-image: repeating-linear-gradient(90deg, #ddd8ca 0 6px, transparent 6px 8px);
+  --bar-fill-image: repeating-linear-gradient(90deg, var(--color-info) 0 6px, rgb(138 92 0 / 0.25) 6px 8px);
   --scroll-thumb: #cfc9b9;
+  --head-rule: 1px solid #d9d4c6;      /* boxed header parity, light-plane border color */
+  --head-cell-bg: #f1eee5;
 
-  /* density: same compact instrument frame as Ops (paired grid) */
-  --pad-head: 0; --brand-pad: 8px 14px; --head-cell-pad: 8px 14px;
-  --head-rule: 1px solid #d9d4c6; --head-cell-bg: #f1eee5;   /* boxed header parity */
-  --pad-main: 12px 12px; --gap-main: 12px; --grid-cols: minmax(0, 58fr) minmax(0, 42fr);
-  --pad-panehead: 8px 12px;
-  --pad-chat: 12px; --chat-gap: 8px;
-  --msg-pad: 4px 8px; --msg-tail: 0;
-  --gap-stat: 8px; --pad-stat: 12px 12px 0;
-  --pad-sec: 0 12px; --sec-gap: 12px; --sec-rule: 1px;
-  --roster-cols: repeat(2, minmax(0, 1fr)); --gap-rolegroup: 12px;
-  --pad-foot: 8px 12px;
-
-  /* labels: same uppercase tracked mono instrument labels as Ops */
-  --tt-label: uppercase; --ls-label: 0.14em;
-  --h3-rule: 1px solid #1c1a15;       /* interior ink rules = print soul */
-  --stats-rule: 2px solid #1c1a15;
-  --foot-rule: 2px solid #1c1a15;
-
-  /* chat material: console transcript parity (rails, no bubbles) */
-  --msg-user-rail-w: 2px;
+  /* chat material: transcript rails (same widths as Ops), plane colors */
   --msg-user-rail-c: #0e7490;
-  --msg-alexa-rail-w: 2px;
   --msg-alexa-rail-c: #8a5c00;
-  --msg-frame-pad: 0 0 0 8px;
   --input-bg: #fbfaf6;
-  --input-border-w: 1px;
   --input-line: #c9c3b2;
 
   --chart-grid: #e3ded1;

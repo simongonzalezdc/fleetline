@@ -23,8 +23,8 @@ no per-mode component CSS.
 - **Aesthetic territory:** "voice console over engine room": conversation
   transcript dominant left, instrument stack right; ONE design language in
   two value planes — Ops (dark: near-black panel, amber phosphor, hairline
-  instrument grid) and Press (light: warm paper, ink, the same anatomy with
-  folio-serif numerals and ink rules as the print material).
+  instrument grid) and Press (light: warm paper, ink, the exact same
+  anatomy — R4: colors-only light-plane remap).
 - **Personality:** calm mission-control authority. Precision surfaces;
   warmth lives in language and voice, not decoration.
 - **Structure and rhythm:** asymmetric two-pane console; instrument-stack
@@ -49,6 +49,15 @@ no per-mode component CSS.
 - **R3 — two modes only:** "remove signal its messy to have a random third
   style" → Signal deleted. The theme system is exactly **Ops (dark) +
   Press (light)**.
+- **R4 — literal pairing (later same day, on seeing the pair):** "I wanted
+  them both to look like they were the same thing but in dark and light
+  mode. And they still are very different." → **Press is Ops with the
+  colors inverted to a light plane — nothing else differs.** The Press
+  remap declares color values ONLY; every earlier press-flavor allowance
+  (serif masthead/folio numerals, `--step-3/4` plane levers, zero radius,
+  hairline ink rules, solid bars, missing canvas grid) is **superseded and
+  removed**. Receipt: `docs/DESIGN-SYSTEM-RECEIPT-2026-09-25.md`
+  § LITERAL PAIRING FIX.
 
 ## System architecture (how the two modes coexist)
 
@@ -70,10 +79,14 @@ Laws:
    (each with a real build job): `--color-*-bg/-line`-style derived tints
    (computed via `color-mix` at use sites), `--font-num` (metric numerals),
    `--color-text-label` (mono instrument labels), material/density tokens.
-5. **Pairing law:** every component, state, and motion exists identically in
-   both planes; the only differences are token values. Press's serif is
-   confined to exactly two surfaces: the masthead wordmark and the stat
-   folio numerals (`--font-display`, `--font-num`).
+5. **Pairing law (R4, literal):** every component, state, material, and
+   motion exists identically in both planes; the ONLY differences are
+   color-token values (paper ground, ink text, light-plane borders/halos,
+   plane-adjusted state colors, AA-adjusted amber text accent). The
+   press-flavor allowances this law superseded (serif masthead/folio
+   numerals, plane-lever type sizes, zero radius, ink rules, solid bars,
+   no canvas grid) are deleted — Press inherits the Ops type stack, scale,
+   radii, materials, and geometry wholesale.
 
 ---
 
@@ -150,14 +163,14 @@ table — 0 fails required to land).
 
 | Role | Ops | Press |
 | --- | --- | --- |
-| `--font-display` | system mono (wordmark) | New York/Georgia serif (masthead wordmark ONLY) |
+| `--font-display` | system mono (wordmark) | same system mono (R4: serif deleted) |
 | `--font-body` | system mono (`ui-monospace, SF Mono, JetBrains Mono, Menlo`) | same system mono — shared instrument DNA |
 | `--font-mono` | system mono | system mono |
-| `--font-num` (metrics) | system mono, tabular | New York/Georgia serif (folio numerals), tabular |
+| `--font-num` (metrics) | system mono, tabular | same system mono, tabular (R4: folio serif deleted) |
 
-**Pairing law:** mono-first is the shared DNA in BOTH planes; the Press
-serif appears in exactly two surfaces — masthead wordmark + stat numerals —
-so the light mode reads as the same product, printed.
+**Pairing law (R4):** mono-first in BOTH planes, everywhere — Press uses
+the exact Ops type stack, scale, and weights; the light mode reads as the
+same product, printed.
 
 ### Scale (canonical steps; rem-based; console-constant)
 
@@ -167,8 +180,8 @@ so the light mode reads as the same product, printed.
 | `--step--1` | `0.8125rem` (13px) | worker rows, mission rows, tool chips, report body |
 | `--step-0` | `0.9375rem` (15px) | chat body, input, send |
 | `--step-1` | `1rem` (16px) | reserved scale rung |
-| `--step-3` | plane lever | stat numerals: Ops `1.3125rem` (21px) · Press `1.875rem` (30px folio) |
-| `--step-4` | plane lever | wordmark: Ops `1.0625rem` boxed · Press `1.5rem` masthead |
+| `--step-3` | `1.3125rem` (21px) | stat numerals (R4: same size both planes) |
+| `--step-4` | `1.0625rem` (17px) | wordmark (R4: same size both planes) |
 
 Line-heights: unitless — body 1.5, feed 1.35, headings 1.1. Measure:
 `--measure: 68ch` on the report view; chat transcript uses the pane width
@@ -228,10 +241,11 @@ depth = rule weight and surface steps, never elevation.
 - **Ops (dark):** near-black canvas with a 2.2%-white instrument grid
   (28px pitch); boxed header cells; LED stat dots with a 6px phosphor halo
   (live state); segmented progress bars (6px pitch).
-- **Press (light):** paper canvas; raised-paper panels with hairline
-  borders; the same boxed header cells in paper tones; the same LED dots in
-  deep amber; solid ink-amber progress bars; interior ink rules (2px stats
-  top rule, h3 rules, footer rule) carry the print register.
+- **Press (light, R4):** paper canvas with the SAME 28px-pitch instrument
+  grid at 3%-ink; raised-paper panels; the same boxed header cells in paper
+  tones; the same LED dots (success green, plane-adjusted); the same
+  segmented progress bars (6px pitch) in ink-amber plane colors. No
+  per-plane rules or materials — every geometry token is shared.
 - Glow law: **live state only** — LED dots, busy halos, the rec mic. No
   static element glows.
 
@@ -276,15 +290,15 @@ status word. Empty: "No workers reported. / Is the fleet engine running?"
 Loading: 3 skeleton rows (pulse; static under reduced-motion).
 
 ### 5. Stat cell (`.stat`)
-Value (`--step-3`, `--font-num`, tabular; folio serif in Press) over key
+Value (`--step-3`, `--font-num`, tabular — mono in both planes per R4) over key
 (micro mono uppercase). LED dot top-right (success; `--color-info` when
 busy-live). Strip = `role="group" aria-label="Fleet statistics"`. Loading:
 value renders `—` until first data.
 
 ### 6. Mission block (`.mission`)
 Goal (ellipsis) · status badge (text label + state tint) · meta (id · kind
-· progress · duration, tabular) · 6px progress bar (Ops segmented amber /
-Press solid ink-amber; fill color = status). History law: blocks beyond the
+· progress · duration, tabular) · 6px segmented progress bar in BOTH planes
+(R4; fill color = status, plane-adjusted). History law: blocks beyond the
 3 most recent render collapsed (goal + badge only, 0.75 opacity — still
 ≥4.5:1) so repeat goals read at a glance.
 
@@ -435,7 +449,7 @@ icons** (the 🎙 mic was replaced in this system).
   --accent-400: #0e7490; /* deep operator cyan */
   --color-bg: #f6f4ee;   /* paper */
   --color-text: #1c1a15; /* ink */
-  /* …serif masthead+numerals, ink rules, paper surfaces — full set in tokens.css */
+  /* …colors-only remap — full set in tokens.css (R4: no serif, no geometry deltas) */
 }
 ```
 
@@ -448,8 +462,8 @@ icons** (the 🎙 mic was replaced in this system).
 | A4 (was Press-light) | resolved by R2: Press = light half of pair | CEO verbatim | confirmed |
 | A5 English-only | yes | E1 | CEO pass |
 | A6 compact density, no toggle | yes | E3 | CEO pass |
-| A7 amber pairing strategy | fills shared phosphor; text accents plane-variant; serif confined to masthead + folio numerals | R1+R2 | CEO pass |
-| A8 component parity | boxed header + LED dots + transcript in both planes; bars segmented (Ops) vs solid (Press) as the one material difference | R2 | CEO pass |
+| A7 amber pairing strategy | fills shared phosphor; text accents plane-variant | R1+R2 | CEO pass · serif clause superseded by R4 (mono everywhere) |
+| A8 component parity | boxed header + LED dots + transcript in both planes | R2 | CEO pass · "solid Press bars" clause superseded by R4 (segmented bars both planes) |
 
 (A1 — register set — was superseded by R1/R3: two modes, Ops default.)
 
