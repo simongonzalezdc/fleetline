@@ -72,7 +72,7 @@ Official-tool check: `npx @modelcontextprotocol/inspector --cli http://127.0.0.1
 | `scripts/demo-client.ts` | CLI proof client |
 | `test/` | Unit + end-to-end tests (14) |
 | `proof/` | Run artifacts: demo transcript, inspector output, live-URL audit, browser screenshot |
-| `demo/DEMO-SCRIPT.md` | 2-minute demo video script |
+| `demo/DEMO-SCRIPT.md` | Demo video script (~2:20, under the 2:30 cap; includes the cancel beat) |
 | `docs/FRICTION-LOG.md` | Product feedback on every tool used (track asks for this; up to 10% judging bonus) |
 | `SUBMISSION.md` | Paste-ready submission fields + the steps that need the operator |
 
@@ -93,7 +93,7 @@ Official-tool check: `npx @modelcontextprotocol/inspector --cli http://127.0.0.1
 | --- | --- |
 | **Tech Implementation** | Real MCP server on the official TS SDK with stateful Streamable HTTP sessions (spec 2025-11-25); a parallel worker-pool engine with a 3-stage task pipeline and survivable partial failure; server-initiated progress as MCP logging notifications; a browser MCP client built from the same SDK; 14 tests including a full end-to-end lifecycle; official MCP Inspector validation (`proof/`). |
 | **Design** | The simulator is a purpose-built voice-console: Alexa-style conversation pane with visible tool calls (honesty about what the assistant does), live fleet dashboard (roster, missions, event ticker) fed by the same notifications, one-glance quick-start chips, voice in/out. Voice-shaped replies (short, numbers-first) are codified in the Agent Skill. |
-| **Potential Impact** | Voice is the hands-free control surface for operators — accessibility, kitchens, warehouses, incident response. Fleetline shows any MCP-capable assistant (Alexa+ today, other clients tomorrow — MCP is the portability layer) commanding fleets that run locally: no cloud, no keys, no per-call cost. The pattern — fleet-as-MCP-server — is reusable beyond this demo. |
+| **Potential Impact** | One user, one workflow: the solo operator or developer running a local agent fleet who needs hands-free dispatch-and-collect — say "brief me on the AI news corpus" from across the room, come back to one finished report; keyboard-free and eyes-free, which is also the accessibility case (hands occupied, motor or visual constraints). Modeled on a real solo-operator workflow, not an enterprise category list. Beyond the hackathon, the audience is every developer already running local agents who wants voice as a second control surface — MCP is the portability layer, so Alexa+ operates the fleet today and any MCP client can tomorrow: no cloud, no keys, no per-call cost. And the strongest differentiator is true here: the track's sanctioned simulation path is exempt from runtime technology-hook requirements — Fleetline ships real runtime SDK hooks anyway (the simulator is itself an official-SDK MCP client over Streamable HTTP). |
 | **Quality of the Idea** | One idea carried all the way: *your fleet, by voice*. It inverts the usual "voice assistant as the agent" into "voice assistant as the fleet operator", and lands it on exactly the two standards the track names (MCP Streamable HTTP + Agent Skills), so the same fleet is operable by voice, CLI, or any MCP client. |
 
 ## Honest scope notes
