@@ -4,27 +4,78 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fleetline — Alexa+ fleet command simulator</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="stylesheet" href="tokens.css" />
   <link rel="stylesheet" href="style.css" />
+  <script>
+    // Mode boot: ?theme=ops|press (default: ops — dark mode of the pair). Runs before first paint.
+    (function () {
+      var t = new URLSearchParams(window.location.search).get("theme");
+      document.documentElement.dataset.theme = (t === "press") ? "press" : "ops";
+    })();
+  </script>
 </head>
 <body>
-  <header>
+  <!-- one inline-SVG monoline icon set (16px grid, currentColor) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-mic" viewBox="0 0 16 16">
+        <rect x="6" y="1.5" width="4" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M3.5 8a4.5 4.5 0 0 0 9 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+        <line x1="8" y1="12.5" x2="8" y2="14.5" stroke="currentColor" stroke-width="1.5"/>
+      </symbol>
+      <symbol id="i-voice-on" viewBox="0 0 16 16">
+        <path d="M2.5 6.5h2.5L8 3.5v9L5 9.5H2.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M10.5 5.5a3.4 3.4 0 0 1 0 5M12.5 3.5a6.2 6.2 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      </symbol>
+      <symbol id="i-voice-off" viewBox="0 0 16 16">
+        <path d="M2.5 6.5h2.5L8 3.5v9L5 9.5H2.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="10" y1="6" x2="14" y2="10" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="14" y1="6" x2="10" y2="10" stroke="currentColor" stroke-width="1.5"/>
+      </symbol>
+      <symbol id="i-chev" viewBox="0 0 16 16">
+        <path d="M4.5 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 16 16">
+        <path d="M3 8.5l3.5 3.5L13 4.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      </symbol>
+      <symbol id="i-cross" viewBox="0 0 16 16">
+        <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      </symbol>
+      <symbol id="i-dot" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="2.5" fill="currentColor"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <header class="app-head">
     <div class="brand">
-      <span class="mark">◈</span>
-      <div>
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M4 24 L10 24 L14 16 L10 8 L4 8 L8 16 Z" class="mk-a" />
+        <path d="M12 24 L18 24 L22 16 L18 8 L12 8 L16 16 Z" class="mk-b" />
+        <path d="M20 24 L26 24 L30 16 L26 8 L20 8 L24 16 Z" class="mk-c" />
+      </svg>
+      <div class="brand-text">
         <h1>Fleetline</h1>
-        <p>simulated Alexa+ experience · commands a local agent fleet over MCP</p>
+        <p>Alexa+ fleet command · MCP over Streamable HTTP</p>
       </div>
     </div>
-    <div class="conn" id="conn">
-      <span class="dot" id="conn-dot"></span><span id="conn-text">connecting…</span>
+    <div class="head-right">
+      <span class="proto-tag" title="The conversation pane is a sanctioned stand-in for Alexa+">simulator</span>
+      <div class="conn" id="conn" role="status">
+        <span class="dot" id="conn-dot"></span><span id="conn-text">connecting…</span>
+      </div>
     </div>
   </header>
 
   <main>
-    <section class="pane chat-pane">
+    <section class="pane chat-pane" aria-label="Conversation">
       <div class="pane-head">
         <h2>Conversation</h2>
-        <button id="voice-btn" class="voice" title="Toggle voice output (browser speech synthesis)">🔊 voice on</button>
+        <button id="voice-btn" class="voice" aria-pressed="true" title="Toggle voice output (browser speech synthesis)">
+          <svg class="icon" aria-hidden="true"><use href="#i-voice-on"/></svg><span class="voice-label">voice on</span>
+        </button>
       </div>
       <div id="chat" class="chat" aria-live="polite"></div>
       <div class="chips" id="chips">
@@ -37,19 +88,39 @@
       <form id="composer" class="composer" autocomplete="off">
         <input id="utterance" placeholder="Talk to your fleet… e.g. 'brief me on the sleep research corpus'"
                aria-label="Talk to your fleet" />
-        <button type="submit" id="mic" title="Speak (browser speech recognition)" aria-label="Speak">🎙</button>
+        <button type="button" id="mic" title="Speak (browser speech recognition)" aria-label="Speak" aria-pressed="false">
+          <svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>
+        </button>
         <button type="submit" class="send">Send</button>
       </form>
     </section>
 
-    <section class="pane dash-pane">
+    <section class="pane dash-pane" aria-label="Fleet dashboard">
       <div class="pane-head"><h2>Fleet dashboard</h2><span class="sub" id="mission-count">0 missions</span></div>
-      <h3>Workers</h3>
-      <div id="roster" class="roster"></div>
-      <h3>Missions</h3>
-      <div id="missions" class="missions"><p class="empty">No missions yet.</p></div>
-      <h3>Live events</h3>
-      <div id="feed" class="feed"><p class="empty">Waiting for fleet traffic…</p></div>
+      <div class="stats" id="stats" role="group" aria-label="Fleet statistics">
+        <div class="stat"><span class="v">—</span><span class="k">fleet workers</span></div>
+        <div class="stat"><span class="v">—</span><span class="k">busy now</span></div>
+        <div class="stat"><span class="v">—</span><span class="k">missions</span></div>
+        <div class="stat"><span class="v">—</span><span class="k">fleet events</span></div>
+      </div>
+      <div class="dash-section" data-sec="workers">
+        <h3>Workers</h3>
+        <div id="roster" class="roster" aria-busy="true">
+          <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        </div>
+      </div>
+      <div class="dash-section" data-sec="missions">
+        <h3>Missions</h3>
+        <div id="missions" class="missions" aria-busy="true">
+          <div class="skeleton"></div>
+        </div>
+      </div>
+      <div class="dash-section" data-sec="events">
+        <h3>Live events</h3>
+        <div id="feed" class="feed" aria-live="off">
+          <p class="empty">Waiting for fleet traffic…<span class="hint">Dispatch a mission to see the fleet work.</span></p>
+        </div>
+      </div>
     </section>
   </main>
 

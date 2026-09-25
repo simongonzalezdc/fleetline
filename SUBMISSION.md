@@ -151,7 +151,7 @@ CLI proof).
    no card, no purchase).
 2. **GitHub publication** — create the public repo (suggest
    `simon/fleetline` or an org repo), push `main` from
-   `/Users/simongonzalezdecruz/workspaces/amazon-bss`, confirm MIT LICENSE
+   `~/workspaces/amazon-bss`, confirm MIT LICENSE
    present. Add topic `build-ship-shape`.
 3. **Demo video** — record per `demo/DEMO-SCRIPT.md` (OBS or QuickTime,
    1440x900, one take with autodemo fallback), upload to YouTube as public,
