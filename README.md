@@ -33,7 +33,11 @@ transport** (spec 2025-11-25) and **Agent Skills**.
 - **Alexa+ web simulator** (sanctioned by the track for builders without
   device access): a browser page that is itself a real MCP client — the
   official SDK client over Streamable HTTP — with an Alexa-style conversation
-  pane, voice in/out (Web Speech API), and a live fleet dashboard.
+  pane, voice in/out (Web Speech API), and a live fleet dashboard. The
+  interface ships one default design — **Signal** (dark product-glass) —
+  plus two alternate themes for comparison: `?theme=ops` (amber operations
+  console) and `?theme=press` (light editorial broadsheet). All three are
+  WCAG-contrast audited; video/README screenshots use the default.
 - **Agent Skill** (`skills/fleet-operator/`): standards-compliant
   `SKILL.md` packaging that teaches any Agent-Skills-compatible agent how to
   operate the fleet, with voice-shaped response guidance.
