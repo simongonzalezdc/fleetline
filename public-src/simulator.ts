@@ -26,12 +26,20 @@ const feedEl = $("feed");
 const connEl = $("conn");
 const connText = $("conn-text");
 const missionCount = $("mission-count");
+const statsEl = $("stats");
 const voiceBtn = $<HTMLButtonElement>("voice-btn");
+const voiceLabel = voiceBtn.querySelector<HTMLElement>(".voice-label");
 const micBtn = $<HTMLButtonElement>("mic");
 
 let voiceOn = true;
 let lastMissionId: string | undefined;
 const knownMissions = new Map<string, string>();
+
+/** Presentational caches for the stat strip (visual aggregation only). */
+type RosterWorker = { id: string; role: string; status: string; tasksDone: number };
+let lastRoster: RosterWorker[] = [];
+let lastMissions: Array<Record<string, unknown>> = [];
+let eventCount = 0;
 
 const client = new Client({ name: "fleetline-simulator", version: "1.0.0" });
 
@@ -65,7 +73,7 @@ async function connect(): Promise<void> {
 function addMsg(who: "user" | "alexa", text: string) {
   const el = document.createElement("div");
   el.className = `msg ${who}`;
-  el.innerHTML = `<span class="who">${who === "user" ? "you" : "alexa+ (simulated)"}</span>`;
+  el.innerHTML = `<span class="who">${who === "user" ? "You" : "Alexa+ · simulated"}</span>`;
   el.appendChild(document.createTextNode(text));
   chat.appendChild(el);
   chat.scrollTop = chat.scrollHeight;
@@ -79,10 +87,13 @@ function sysMsg(text: string) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-function toolMsg(text: string) {
+function toolMsg(tool: string, args: Record<string, unknown>) {
   const el = document.createElement("div");
   el.className = "msg tool";
-  el.textContent = text;
+  el.innerHTML =
+    `<span class="tool-tag">MCP</span>` +
+    `<span class="tool-name">tools/call ${escapeHtml(tool)}</span>` +
+    `<span class="tool-args">${escapeHtml(JSON.stringify(args))}</span>`;
   chat.appendChild(el);
   chat.scrollTop = chat.scrollHeight;
 }
@@ -107,7 +118,7 @@ async function handleUtterance(text: string) {
 }
 
 async function runPlan(plan: ToolPlan) {
-  toolMsg(`→ tools/call ${plan.tool} ${JSON.stringify(plan.args)}`);
+  toolMsg(plan.tool, plan.args);
   try {
     const res = await client.callTool({ name: plan.tool, arguments: plan.args });
     const payload = parseResult(res);
@@ -146,16 +157,34 @@ async function refreshRoster() {
   } catch { /* server gone; connection banner already reflects it */ }
 }
 
-function renderRoster(workers: Array<{ id: string; role: string; status: string; tasksDone: number }>) {
+function renderRoster(workers: RosterWorker[]) {
+  lastRoster = workers;
   rosterEl.innerHTML = "";
+  const groups = new Map<string, RosterWorker[]>();
   for (const w of workers) {
-    const el = document.createElement("div");
-    el.className = "worker";
-    el.innerHTML = `
-      <div class="top"><span class="id">${w.id}</span><span class="wdot ${w.status}" title="${w.status}"></span></div>
-      <span class="stats">${w.role} · ${w.tasksDone} task${w.tasksDone === 1 ? "" : "s"} done</span>`;
-    rosterEl.appendChild(el);
+    const arr = groups.get(w.role) ?? [];
+    arr.push(w);
+    groups.set(w.role, arr);
   }
+  for (const [role, list] of groups) {
+    const group = document.createElement("div");
+    group.className = "role-group";
+    group.innerHTML = `<div class="role-name">${escapeHtml(role)}<span class="role-count">×${list.length}</span></div>`;
+    const rows = document.createElement("div");
+    rows.className = "role-workers";
+    for (const w of list) {
+      const el = document.createElement("div");
+      el.className = "worker";
+      el.innerHTML = `
+        <span class="wdot ${w.status}" title="${w.status}"></span>
+        <span class="wid">${escapeHtml(w.id)}</span>
+        <span class="wdone">${w.tasksDone} done</span>`;
+      rows.appendChild(el);
+    }
+    group.appendChild(rows);
+    rosterEl.appendChild(group);
+  }
+  updateStats();
 }
 
 async function refreshBoard() {
@@ -168,9 +197,11 @@ async function refreshBoard() {
 }
 
 function renderMissions(missions: Array<Record<string, unknown>>) {
+  lastMissions = missions;
   missionCount.textContent = `${missions.length} mission${missions.length === 1 ? "" : "s"}`;
   if (missions.length === 0) {
     missionsEl.innerHTML = `<p class="empty">No missions yet.</p>`;
+    updateStats();
     return;
   }
   missionsEl.innerHTML = "";
@@ -178,11 +209,41 @@ function renderMissions(missions: Array<Record<string, unknown>>) {
     const el = document.createElement("div");
     el.className = "mission";
     const dur = m.durationMs !== undefined ? ` · ${(Number(m.durationMs) / 1000).toFixed(1)}s` : "";
+    const pct = missionPercent(m);
     el.innerHTML = `
-      <div class="row"><span class="goal">${escapeHtml(String(m.goal ?? m.id))}</span><span class="badge ${m.status}">${m.status}</span></div>
-      <div class="meta">${m.id} · ${m.kind} · ${m.progress}${dur}</div>`;
+      <div class="m-top"><span class="goal">${escapeHtml(String(m.goal ?? m.id))}</span><span class="badge s-${m.status}">${m.status}</span></div>
+      <div class="m-meta">${m.id} · ${m.kind} · ${m.progress}${dur}</div>
+      <div class="bar"><span class="fill ${m.status}" style="width:${pct}%"></span></div>`;
     missionsEl.appendChild(el);
   }
+  updateStats();
+}
+
+/** Truthful progress percentage from taskStats (fallback: "3/12 tasks" string). */
+function missionPercent(m: Record<string, unknown>): number {
+  const stats = m.taskStats as { total?: number; completed?: number; failed?: number } | undefined;
+  if (stats && Number(stats.total) > 0) {
+    const done = Number(stats.completed ?? 0) + Number(stats.failed ?? 0);
+    return Math.round((done / Number(stats.total)) * 100);
+  }
+  const match = /(\d+)\/(\d+)/.exec(String(m.progress ?? ""));
+  if (match && Number(match[2]) > 0) return Math.round((Number(match[1]) / Number(match[2])) * 100);
+  return m.status === "completed" ? 100 : 0;
+}
+
+/** Stat strip: pure visual aggregation of already-fetched data. */
+function updateStats() {
+  if (!statsEl) return;
+  const busy = lastRoster.filter((w) => w.status === "busy").length;
+  const cells: Array<[string, string, boolean?]> = [
+    ["fleet workers", `${lastRoster.length}`, false],
+    ["busy now", `${busy}`, busy > 0],
+    ["missions", `${lastMissions.length}`, false],
+    ["fleet events", `${eventCount}`, false],
+  ];
+  statsEl.innerHTML = cells
+    .map(([k, v, hot]) => `<div class="stat${hot ? " busy-live" : ""}"><span class="v">${v}</span><span class="k">${k}</span></div>`)
+    .join("");
 }
 
 function onFleetEvent(e: Record<string, unknown>) {
@@ -192,9 +253,12 @@ function onFleetEvent(e: Record<string, unknown>) {
   const t = new Date(Number(e.ts ?? Date.now())).toLocaleTimeString();
   const line = document.createElement("div");
   line.className = `evt ${cls}`;
+  const ico = cls === "started" ? "▸" : cls === "completed" ? "✓" : cls === "failed" ? "✕" : "·";
   const detail = formatEvent(type, e);
-  line.innerHTML = `<span class="t">${t}</span> <span class="a">${type}</span> ${escapeHtml(detail)}`;
+  line.innerHTML = `<span class="t">${t}</span><span class="ico">${ico}</span><span class="a">${escapeHtml(type)}</span><span class="d">${escapeHtml(detail)}</span>`;
   feedEl.prepend(line);
+  eventCount += 1;
+  updateStats();
   while (feedEl.children.length > 60) feedEl.lastChild?.remove();
 
   if (type.startsWith("task_") || type.startsWith("mission_")) {
@@ -210,7 +274,12 @@ function formatEvent(type: string, e: Record<string, unknown>): string {
     case "task_failed": return `${e.workerId} ${e.label} — ${e.error}`;
     case "mission_completed": return `"${e.goal}" in ${Number(e.durationMs)}ms`;
     case "mission_failed": return String(e.error ?? "");
-    default: return JSON.stringify(e).slice(0, 140);
+    case "mission_cancelled": return `mission ${e.missionId ?? ""}`;
+    default: {
+      const worker = e.workerId ? `${e.workerId} ` : "";
+      const label = e.label ? String(e.label) : e.missionId ? `mission ${e.missionId}` : "";
+      return `${worker}${label}`.trim();
+    }
   }
 }
 
@@ -237,8 +306,8 @@ chips.addEventListener("click", (ev) => {
 
 voiceBtn.addEventListener("click", () => {
   voiceOn = !voiceOn;
-  voiceBtn.textContent = voiceOn ? "🔊 voice on" : "🔇 voice off";
-  voiceBtn.classList.toggle("off", !voiceOn);
+  voiceBtn.setAttribute("aria-pressed", voiceOn ? "true" : "false");
+  if (voiceLabel) voiceLabel.textContent = voiceOn ? "voice on" : "voice off";
   if (!voiceOn && "speechSynthesis" in window) speechSynthesis.cancel();
 });
 
