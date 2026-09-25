@@ -1,0 +1,137 @@
+/* ============================================================
+   Theme PRESS — light editorial broadsheet.
+   Print register: warm paper, near-black ink, kyanite-blue
+   accent, serif display numerals, hairline rules instead of
+   cards, dotted leaders, zero radius, zero shadow.
+   ============================================================ */
+
+[data-theme="press"] {
+  --bg: #f6f4ee;
+  --panel: #fbfaf6;
+  --panel-border: 1px solid #d9d4c6;
+  --line: #ddd8ca;
+  --text: #1c1a15;
+  --muted: #6d6a5f;
+  --label: #1c1a15;
+
+  --accent: #1c56d6;          /* kyanite blue */
+  --accent-2: #1c56d6;
+  --ok: #167a4a;   --ok-line: rgba(22, 122, 74, 0.45);   --ok-bg: rgba(22, 122, 74, 0.08);  --ok-halo: rgba(22, 122, 74, 0.15);  --ok-text: #167a4a;
+  --warn: #a16207; --warn-line: rgba(161, 98, 7, 0.45);  --warn-bg: rgba(161, 98, 7, 0.08);
+  --bad: #b3362b;  --bad-line: rgba(179, 54, 43, 0.45);  --bad-bg: rgba(179, 54, 43, 0.07);
+  --busy: #1c56d6; --busy-line: rgba(28, 86, 214, 0.45); --busy-bg: rgba(28, 86, 214, 0.07); --busy-halo: rgba(28, 86, 214, 0.14);
+  --focus: #1c56d6;
+
+  --font-body: -apple-system, "SF Pro Text", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --font-display: "New York", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-num: "New York", ui-serif, Georgia, serif;
+
+  --fs-brand: 24px; --fs-micro: 12px; --fs-label: 12px; --fs-chat: 14.5px;
+  --fs-tool: 11.5px; --fs-worker: 13px; --fs-feed: 11.5px; --fs-stat: 26px;
+  --fw-display: 600; --fw-label: 600; --ls-brand: 0;
+  --tt-label: none; --ls-label: 0.02em;
+
+  --mark-size: 30px;
+  --r-panel: 0px; --r-ctl: 0px; --r-msg: 0px; --r-chip: 0px;
+  --r-tag: 0px; --r-stat: 0px; --r-badge: 0px; --r-bar: 0px;
+
+  --cols: minmax(0, 11fr) minmax(0, 9fr);
+  --gap-main: 0px; --pad-main: 0 0 0;
+  --pad-head: 14px 26px;
+  --head-bg: #f6f4ee;
+  --panehead-bg: transparent;
+  --foot-bg: #f6f4ee;
+  --pad-panehead: 16px 20px 10px;
+  --pad-chat: 18px 20px; --chat-gap: 14px; --msg-max: 92%;
+  --pad-msg: 0 0 0 0;
+
+  --tag-fg: #6d6a5f; --tag-line: #c9c3b2; --tag-bg: transparent;
+
+  --voice-fg: #1c56d6; --voice-bg: transparent; --voice-line: #b9c8ea;
+
+  --user-bg: transparent; --user-line: transparent; --user-fg: #1c1a15;
+  --alexa-bg: transparent; --alexa-line: transparent;
+  --alexa-rail: 0; --who-alexa: #1c56d6; --r-msg-tail: 0;
+
+  --tool-bg: #f1eee5; --tool-line: #ddd8ca;
+  --tool-fg: #57544a; --tool-tag-fg: #1c56d6; --tool-tag-line: #b9c8ea;
+  --tool-name-fg: #1c1a15;
+
+  --chip-bg: transparent; --chip-fg: #3a372e; --chip-line: #c9c3b2;
+
+  --input-bg: transparent; --input-border: 0;
+  --send-bg: #1c1a15; --send-fg: #f6f4ee; --send-line: #1c1a15;
+  --send-hover: brightness(1.25);
+
+  --gap-stat: 0; --pad-stat: 6px 20px 2px;
+  --stat-bg: transparent; --stat-border: 0;
+  --stat-fg: #1c1a15; --fw-stat: 600;
+
+  --pad-sec: 0 20px; --sec-gap: 12px; --sec-rule: 1px;
+  --roster-cols: repeat(3, minmax(0, 1fr)); --gap-rolegroup: 16px;
+  --worker-bg: transparent; --worker-border: 0;
+  --mission-bg: transparent; --mission-border: 0;
+  --bar-track: #e3ded1; --bar-fill: #1c56d6;
+
+  --feed-h: 240px; --feed-rule: #ebe7db; --feed-t: #6f6a5c;
+
+  --pad-foot: 12px 26px;
+  --scroll-thumb: #cfc9b9;
+
+  color-scheme: light;
+}
+
+/* broadsheet column split: a vertical rule, not two cards */
+[data-theme="press"] main { gap: 0; }
+[data-theme="press"] .pane { border: 0; background: transparent; }
+[data-theme="press"] .dash-pane { border-left: 1px solid #d9d4c6; padding-left: 4px; background: #fbfaf6; }
+[data-theme="press"] .chat-pane { padding-right: 4px; }
+[data-theme="press"] main { padding: 14px 26px 10px; max-width: 1440px; }
+
+/* transcript: no bubbles; speaker names small caps, hairline separators */
+[data-theme="press"] .msg { padding: 0; border: 0; }
+[data-theme="press"] .msg + .msg { padding-top: 12px; }
+[data-theme="press"] .msg .who { font-family: var(--font-body); font-size: 10.5px; letter-spacing: 0.16em; }
+[data-theme="press"] .msg.user { border-left: 2px solid var(--accent); padding-left: 14px; }
+[data-theme="press"] .msg.alexa .who { color: #1c56d6; }
+[data-theme="press"] .msg.system { border: 0; border-top: 1px solid #ddd8ca; border-bottom: 1px solid #ddd8ca; border-radius: 0; padding: 8px 0; background: transparent; }
+
+/* stats as serif folio numerals over a rule */
+[data-theme="press"] .stats { border-top: 2px solid #1c1a15; border-bottom: 1px solid #d9d4c6; }
+[data-theme="press"] .stat { padding: 10px 12px 12px 0; }
+[data-theme="press"] .stat .v { font-size: 30px; }
+[data-theme="press"] .stat .k { font-family: var(--font-body); font-size: 10px; letter-spacing: 0.15em; }
+
+/* workers as a typeset roster with dotted leaders */
+[data-theme="press"] .worker { padding: 3px 0; border-radius: 0; font-family: var(--font-mono); font-size: 12px; }
+[data-theme="press"] .worker .wid { color: #1c1a15; }
+[data-theme="press"] .worker .wdone { color: #6d6a5f; }
+[data-theme="press"] .role-name { border-bottom: 1px solid #1c1a15; font-family: var(--font-body); font-size: 10px; letter-spacing: 0.15em; }
+
+/* missions and badges in print register */
+[data-theme="press"] .mission { padding: 8px 0 10px; border-top: 1px solid #ddd8ca; border-radius: 0; }
+[data-theme="press"] .mission .bar { height: 3px; }
+[data-theme="press"] .mission .bar .fill.completed { background: #167a4a; }
+
+/* wire-feed events */
+[data-theme="press"] .evt { border-bottom: 1px dotted #cfc9b9; }
+[data-theme="press"] .evt .a { font-weight: 600; }
+
+/* composer: underline field + ink button */
+[data-theme="press"] .composer input {
+  border: 0; border-bottom: 1px solid #1c1a15; border-radius: 0;
+  background: transparent; padding: 8px 2px;
+}
+[data-theme="press"] .composer input:focus { border-bottom: 2px solid var(--accent); }
+[data-theme="press"] .chips button { border-radius: 0; }
+[data-theme="press"] .voice { border-radius: 0; }
+[data-theme="press"] footer { border-top: 2px solid #1c1a15; }
+[data-theme="press"] .pane-head { border-bottom: 1px solid #d9d4c6; }
+[data-theme="press"] .pane-head h2 { font-size: 17px; }
+[data-theme="press"] .app-head { border-bottom: 2px solid #1c1a15; }
+[data-theme="press"] .dash-section + .dash-section { border-top: 0; }
+[data-theme="press"] .dash-section h3 {
+  font-family: var(--font-body); font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: 0.15em; color: #1c1a15; border-bottom: 1px solid #1c1a15; padding-bottom: 5px;
+}
