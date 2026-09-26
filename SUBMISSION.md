@@ -147,7 +147,7 @@ README judging map, demo script, tests green on a clean clone
 ### Video
 
 Under 3 minutes, English, public on YouTube:
-https://www.youtube.com/watch?v=AegpNiIJ-F8 — a 70-second cut covering the
+https://www.youtube.com/watch?v=XOnOJ9aU4Os — a 70-second cut covering the
 simulator path end to end (two divergent briefs, live MCP notifications,
 mid-mission cancel), then the real terminal run, a live source audit with a
 dead source, and the Agent Skill.
