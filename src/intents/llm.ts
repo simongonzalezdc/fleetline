@@ -95,7 +95,10 @@ function parseModelJson(text: string): LLMPlan | null {
  * shapes as routeIntent so callers need no other change than an await.
  */
 export async function routeUtterance(utterance: string, deps: RouterDeps): Promise<ToolPlan | { reply: string }> {
-  const base = process.env.FLEETLINE_INTENT_URL?.replace(/\/+$/, "");
+  // globalThis guard: `process` does not exist in the browser bundle, where a
+  // bare process.env reference throws before any utterance can route.
+  const env = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env;
+  const base = env?.FLEETLINE_INTENT_URL?.replace(/\/+$/, "");
   if (base) {
     try {
       const controller = new AbortController();
@@ -105,7 +108,7 @@ export async function routeUtterance(utterance: string, deps: RouterDeps): Promi
         headers: { "Content-Type": "application/json" },
         signal: controller.signal,
         body: JSON.stringify({
-          model: process.env.FLEETLINE_INTENT_MODEL || "local",
+          model: env?.FLEETLINE_INTENT_MODEL || "local",
           temperature: 0,
           max_tokens: 200,
           messages: [

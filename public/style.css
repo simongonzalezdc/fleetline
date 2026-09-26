@@ -74,8 +74,9 @@ body {
 
 .head-right {
   display: flex; align-items: center; gap: var(--space-3);
-  flex: 0 1 auto;          /* may shrink under pressure; conn ellipsizes */
-  min-width: 0;
+  flex: 0 0 auto;          /* never shrink: a squeezed proto-tag renders half-sliced */
+  flex-shrink: 0;
+  min-width: fit-content;
   padding: var(--head-cell-pad);
   border-left: var(--head-rule);
   background: var(--head-cell-bg);

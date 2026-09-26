@@ -405,7 +405,7 @@ function updateStats() {
   if (!statsEl) return;
   const busy = lastRoster.filter((w) => w.status === "busy").length;
   const cells: Array<[string, string, boolean?]> = [
-    ["fleet workers", `${lastRoster.length}`, false],
+    ["workers", `${lastRoster.length}`, false],
     ["busy now", `${busy}`, busy > 0],
     ["missions", `${lastMissions.length}`, false],
     ["fleet events", `${eventCount}`, false],
