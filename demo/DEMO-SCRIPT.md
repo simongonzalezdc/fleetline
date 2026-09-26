@@ -1,5 +1,11 @@
 # Fleetline — demo script (~2:20, hard cap 2:30)
 
+> Status: the shipped cut is 44 s (receipt: `docs/DEMO-VIDEO-2026-09-26.md`).
+> This long-form script remains as the full walkthrough; the beats it drops —
+> the CLI lifecycle (`npm run demo`, transcript in `proof/demo-run.txt`), the
+> audit PASS/FAIL table, and the `SKILL.md` tour — are covered by the README
+> and `proof/`.
+
 Setup before recording: `npm install && npm run build && npm start` in one
 terminal; the simulator open at `http://127.0.0.1:3000/?autodemo=0` in Chrome
 (window ~1440x900). Terminal #2 ready with `npm run demo`. Have the cancel-beat
@@ -13,7 +19,7 @@ paste lines ready in a scratch buffer (below, 1:20).
 | 0:50–1:05 | Simulator | Click "Read the report". The briefing appears; voice reads the first lines. "One composed report from four parallel analyses — keywords, top sentences, reading times — all computed locally, no API keys, zero cost." |
 | 1:05–1:20 | Simulator | Click "Audit two live URLs" chip, then show PASS/FAIL table. "Fetchers do real network work — healthy sources PASS, dead ones FAIL, and the mission survives partial failure." |
 | 1:20–1:45 | Simulator | **Cancel beat.** Paste into the composer: `Audit https://example.com https://modelcontextprotocol.io https://nodejs.org https://example.org https://www.iana.org https://devpost.com https://tools.ietf.org https://192.0.2.1` — eight sources, one dead (192.0.2.1 is non-routable, so its fetch hangs until the 8-second timeout; that hang is your window). While fetchers are still pulling, type: `Cancel it.` The reply — "Mission cancelled. The workers will stand down after their current task." — is `tools/call fleet_cancel`, the one tool no other beat exercises and the one moment that shows commanding rather than requesting. Point at the dashboard: the mission flips to cancelled, workers stand down as they finish their current task, no report gets composed. |
-| 1:45–2:05 | Terminal | Switch to terminal, run `npm run demo`. "The same server through the CLI client: initialize, list tools, submit, live events, collect. And `npm test` — fourteen tests including this full lifecycle end-to-end." |
+| 1:45–2:05 | Terminal | Switch to terminal, run `npm run demo`. "The same server through the CLI client: initialize, list tools, submit, live events, collect. And `npm test` — sixteen tests including this full lifecycle end-to-end." |
 | 2:05–2:20 | Editor (repo) | Show `skills/fleet-operator/SKILL.md` briefly. "Fleetline also ships as an Agent Skill — the second open standard the track asks for — so any skills-compatible agent learns to operate the fleet the same way. Fleetline: your fleet, by voice." |
 
 Recording notes: keep the simulator's voice toggle on for the first reply so

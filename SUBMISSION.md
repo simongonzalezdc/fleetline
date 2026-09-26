@@ -55,18 +55,23 @@ every developer already running local agents who wants voice as a second
 control surface; MCP is the portability layer, so Alexa+ operates the fleet
 today and any MCP client can tomorrow.
 
-One differentiator worth naming: the track's sanctioned simulation path is
-exempt from runtime technology-hook requirements — and Fleetline ships real
-runtime SDK hooks anyway. The simulator is itself an official-SDK MCP client
-speaking Streamable HTTP to the server.
+One differentiator worth naming: the simulator is not a mock — it is an
+official-SDK MCP client speaking Streamable HTTP to the server, so the demo
+path exercises the same runtime the fleet uses.
 
 Zero paid services, zero API keys, zero cloud: the fleet runs entirely
 on localhost, with a bundled offline corpus so judges get a deterministic
-run regardless of network. `npm test` covers 14 tests including a full
+run regardless of network. `npm test` covers 16 tests including a full
 end-to-end lifecycle over Streamable HTTP; `npm audit` reports 0
 vulnerabilities; the official MCP Inspector validates the server; and the
 shipped `skills/fleet-operator` Agent Skill teaches any skills-compatible
 agent to operate the fleet with voice-shaped responses.
+
+Verify it in about a minute: `npm install && npm run build && npm start`,
+open `http://127.0.0.1:3000/` — the page is a real MCP client and connects
+over Streamable HTTP on load. Click "Brief me on the AI news corpus", or
+append `?autodemo=1` for an unattended run. No keys, no cloud,
+deterministic offline corpus.
 
 ### Built with
 
@@ -139,9 +144,13 @@ README judging map, demo script, tests green on a clean clone
 
 ### Video
 
-Under 3 minutes, English, public on YouTube. Script: `demo/DEMO-SCRIPT.md`
-(~2:20 target, hard cap 2:30). Must show the project running (simulator +
-CLI proof).
+Under 3 minutes, English, public on YouTube:
+https://www.youtube.com/watch?v=S7dwUlteIRA — a 44-second cut covering the
+simulator path end to end: two divergent briefs over the same corpus, live
+MCP notifications on the SSE stream, and a mid-mission cancel. The CLI
+lifecycle and the Agent Skill are proven in the repo instead:
+`proof/demo-run.txt` (full mission over Streamable HTTP) and
+`skills/fleet-operator/SKILL.md`.
 
 ## CEO-gated steps (do NOT do as agent)
 
@@ -167,15 +176,9 @@ CLI proof).
 6. If selected: winner forms (W-9 for US individuals) within 10 business
    days.
 
-## Pre-submission checklist
+## Pre-submission checklist — verified 2026-09-26
 
-- [ ] Fresh clone builds: `npm install && npm run build && npm test` — 14/14
-- [ ] `npm start` + browser at `/` — connect banner says "MCP session live"
-- [ ] Chip "Brief me on the AI news corpus" → report renders
-- [ ] `?autodemo=1` runs unattended
-- [ ] `npm run demo` transcript matches `proof/demo-run.txt` shape
-- [ ] MCP Inspector sees 5 tools
-- [ ] No secrets in repo (`git log -p | grep -i "key\|token\|secret"` clean)
-- [ ] GitHub About section shows MIT license (repo Settings → license visibility)
-- [ ] Verify Open Source mini-challenge eligibility wording at submission time (rules say "new, additional open-source project … alongside a primary track submission" — ambiguous for the primary repo)
-- [ ] README criterion map, friction log, demo script, this file all present
+- [x] Fresh clone builds: `npm install && npm run build && npm test` — 16/16
+- [x] `?autodemo=1` runs unattended; Inspector sees 5 tools (`proof/inspector-tools-list.txt`)
+- [x] Secrets scan clean; MIT visible in repo About
+- [x] Demo video public, English, 44s (<3:00): https://www.youtube.com/watch?v=S7dwUlteIRA

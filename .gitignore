@@ -4,3 +4,15 @@ public/simulator.js
 *.log
 .DS_Store
 .env
+demo/*.wav
+demo/*.webm
+demo/captures*/
+demo/voiceover*/
+demo/ROUGH-CUT-PREVIEW*.mp4
+demo/rough-*.mp4
+demo/tight-*.mp4
+demo/act-*.mp4
+demo/a?-*.mp4
+demo/kino-polished-video.mp4
+demo/vo*.wav
+demo/bed*.wav

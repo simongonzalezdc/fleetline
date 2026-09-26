@@ -9,6 +9,8 @@ Built for the **Alexa+ track** of the Amazon *Build, Ship, Shape* hackathon
 (2026), on the two open standards the track names: **MCP Streamable HTTP
 transport** (spec 2025-11-25) and **Agent Skills**.
 
+**Watch the demo (44 s): https://www.youtube.com/watch?v=S7dwUlteIRA**
+
 ```
  you (voice)          simulated Alexa+              Fleetline MCP server            agent fleet
  ──────────►  intent ────────────────► tools/call ───────────────────►  fetcher-01 ─┐
@@ -39,7 +41,7 @@ transport** (spec 2025-11-25) and **Agent Skills**.
   interface ships one design system in two modes — **Ops** (default: dark,
   amber operations console) and **Press** (`?theme=press`: the light,
   paper-and-ink half of the same pair). Both modes are WCAG-contrast
-  audited; video/README screenshots use the default.
+  audited; the video uses the default (Ops).
 - **Agent Skill** (`skills/fleet-operator/`): standards-compliant
   `SKILL.md` packaging that teaches any Agent-Skills-compatible agent how to
   operate the fleet, with voice-shaped response guidance.
@@ -47,6 +49,7 @@ transport** (spec 2025-11-25) and **Agent Skills**.
 ## Quickstart
 
 ```bash
+# Requires Node.js >= 20 (no API keys, no network needed)
 npm install
 npm run build
 npm start          # MCP endpoint at http://127.0.0.1:3000/mcp, simulator at http://127.0.0.1:3000/
@@ -76,7 +79,7 @@ Official-tool check: `npx @modelcontextprotocol/inspector --cli http://127.0.0.1
 | `public-src/simulator.ts`, `public/` | The simulated Alexa+ experience (real SDK MCP client in the browser) |
 | `skills/fleet-operator/` | Agent Skill (SKILL.md + operating guide reference) |
 | `scripts/demo-client.ts` | CLI proof client |
-| `test/` | Unit + end-to-end tests (14) |
+| `test/` | Unit + end-to-end tests (16) |
 | `proof/` | Run artifacts: demo transcript, inspector output, live-URL audit, browser screenshot |
 | `demo/DEMO-SCRIPT.md` | Demo video script (~2:20, under the 2:30 cap; includes the cancel beat) |
 | `docs/FRICTION-LOG.md` | Product feedback on every tool used (track asks for this; up to 10% judging bonus) |
@@ -84,7 +87,7 @@ Official-tool check: `npx @modelcontextprotocol/inspector --cli http://127.0.0.1
 
 ## Verification
 
-- `npm test` — 14/14 green, including an end-to-end test that boots the real
+- `npm test` — 16/16 green, including an end-to-end test that boots the real
   server and drives it with the official SDK client: initialize session,
   list tools, submit mission, receive fleet events as notifications, collect
   report, close session.
