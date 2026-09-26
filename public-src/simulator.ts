@@ -12,7 +12,8 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { LoggingMessageNotificationSchema } from "@modelcontextprotocol/sdk/types.js";
-import { renderReply, routeIntent, type ToolPlan } from "../src/intents/router.js";
+import { renderReply, type ToolPlan } from "../src/intents/router.js";
+import { routeUtterance } from "../src/intents/llm.js";
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -253,7 +254,7 @@ function speak(text: string) {
 async function handleUtterance(text: string) {
   try {
     addMsg("user", text);
-    const plan = routeIntent(text, { lastMissionId, missions: knownMissions });
+    const plan = await routeUtterance(text, { lastMissionId, missions: knownMissions });
     if ("reply" in plan) {
       addMsg("alexa", plan.reply);
       speak(plan.reply);

@@ -61,9 +61,11 @@ path exercises the same runtime the fleet uses.
 
 Zero paid services, zero API keys, zero cloud: the fleet runs entirely
 on localhost, with a bundled offline corpus so judges get a deterministic
-run regardless of network. `npm test` covers 16 tests including a full
+run regardless of network. `npm test` covers 19 tests including a full
 end-to-end lifecycle over Streamable HTTP; `npm audit` reports 0
-vulnerabilities; the official MCP Inspector validates the server; and the
+vulnerabilities; intent routing optionally runs on a local model
+(`FLEETLINE_INTENT_URL`, OpenAI-compatible) with the deterministic router as
+offline fallback; the official MCP Inspector validates the server; and the
 shipped `skills/fleet-operator` Agent Skill teaches any skills-compatible
 agent to operate the fleet with voice-shaped responses.
 
@@ -178,7 +180,7 @@ lifecycle and the Agent Skill are proven in the repo instead:
 
 ## Pre-submission checklist — verified 2026-09-26
 
-- [x] Fresh clone builds: `npm install && npm run build && npm test` — 16/16
+- [x] Fresh clone builds: `npm install && npm run build && npm test` — 19/19
 - [x] `?autodemo=1` runs unattended; Inspector sees 5 tools (`proof/inspector-tools-list.txt`)
 - [x] Secrets scan clean; MIT visible in repo About
 - [x] Demo video public, English, 44s (<3:00): https://www.youtube.com/watch?v=S7dwUlteIRA

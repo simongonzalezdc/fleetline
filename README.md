@@ -79,15 +79,23 @@ Official-tool check: `npx @modelcontextprotocol/inspector --cli http://127.0.0.1
 | `public-src/simulator.ts`, `public/` | The simulated Alexa+ experience (real SDK MCP client in the browser) |
 | `skills/fleet-operator/` | Agent Skill (SKILL.md + operating guide reference) |
 | `scripts/demo-client.ts` | CLI proof client |
-| `test/` | Unit + end-to-end tests (16) |
+| `test/` | Unit + end-to-end tests (19) |
 | `proof/` | Run artifacts: demo transcript, inspector output, live-URL audit, browser screenshot |
 | `demo/DEMO-SCRIPT.md` | Demo video script (~2:20, under the 2:30 cap; includes the cancel beat) |
 | `docs/FRICTION-LOG.md` | Product feedback on every tool used (track asks for this; up to 10% judging bonus) |
 | `SUBMISSION.md` | Paste-ready submission fields + the steps that need the operator |
 
+## Optional: local-model intent routing
+
+Set `FLEETLINE_INTENT_URL` to an OpenAI-compatible endpoint (LM Studio,
+Ollama, llama.cpp server) and tool selection runs on that local model, with
+the deterministic keyword router as the offline fallback — transport, tools,
+fleet, and events are unchanged either way. Verified live against
+Qwen3.8-27B on localhost (1.6–1.9 s warm).
+
 ## Verification
 
-- `npm test` — 16/16 green, including an end-to-end test that boots the real
+- `npm test` — 19/19 green, including an end-to-end test that boots the real
   server and drives it with the official SDK client: initialize session,
   list tools, submit mission, receive fleet events as notifications, collect
   report, close session.
@@ -100,7 +108,7 @@ Official-tool check: `npx @modelcontextprotocol/inspector --cli http://127.0.0.1
 
 | Criterion | Where Fleetline earns it |
 | --- | --- |
-| **Tech Implementation** | Real MCP server on the official TS SDK with stateful Streamable HTTP sessions (spec 2025-11-25); a parallel worker-pool engine with a 3-stage task pipeline and survivable partial failure; server-initiated progress as MCP logging notifications; a browser MCP client built from the same SDK; 16 tests including a full end-to-end lifecycle; official MCP Inspector validation (`proof/`). |
+| **Tech Implementation** | Real MCP server on the official TS SDK with stateful Streamable HTTP sessions (spec 2025-11-25); a parallel worker-pool engine with a 3-stage task pipeline and survivable partial failure; server-initiated progress as MCP logging notifications; a browser MCP client built from the same SDK; an optional local-model intent lane; 19 tests including a full end-to-end lifecycle; official MCP Inspector validation (`proof/`). |
 | **Design** | The simulator is a purpose-built voice-console: Alexa-style conversation pane with visible tool calls (honesty about what the assistant does), live fleet dashboard (roster, missions, event ticker) fed by the same notifications, one-glance quick-start chips, voice in/out. Voice-shaped replies (short, numbers-first) are codified in the Agent Skill. |
 | **Potential Impact** | One user, one workflow: the solo operator or developer running a local agent fleet who needs hands-free dispatch-and-collect — say "brief me on the AI news corpus" from across the room, come back to one finished report; keyboard-free and eyes-free, which is also the accessibility case (hands occupied, motor or visual constraints). Modeled on a real solo-operator workflow, not an enterprise category list. Beyond the hackathon, the audience is every developer already running local agents who wants voice as a second control surface — MCP is the portability layer, so Alexa+ operates the fleet today and any MCP client can tomorrow: no cloud, no keys, no per-call cost. And the strongest differentiator is true here: the track's sanctioned simulation path is exempt from runtime technology-hook requirements — Fleetline ships real runtime SDK hooks anyway (the simulator is itself an official-SDK MCP client over Streamable HTTP). |
 | **Quality of the Idea** | One idea carried all the way: *your fleet, by voice*. It inverts the usual "voice assistant as the agent" into "voice assistant as the fleet operator", and lands it on exactly the two standards the track names (MCP Streamable HTTP + Agent Skills), so the same fleet is operable by voice, CLI, or any MCP client. |
