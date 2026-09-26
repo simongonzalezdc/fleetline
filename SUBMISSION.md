@@ -147,12 +147,10 @@ README judging map, demo script, tests green on a clean clone
 ### Video
 
 Under 3 minutes, English, public on YouTube:
-https://www.youtube.com/watch?v=S7dwUlteIRA — a 44-second cut covering the
-simulator path end to end: two divergent briefs over the same corpus, live
-MCP notifications on the SSE stream, and a mid-mission cancel. The CLI
-lifecycle and the Agent Skill are proven in the repo instead:
-`proof/demo-run.txt` (full mission over Streamable HTTP) and
-`skills/fleet-operator/SKILL.md`.
+https://www.youtube.com/watch?v=AegpNiIJ-F8 — a 70-second cut covering the
+simulator path end to end (two divergent briefs, live MCP notifications,
+mid-mission cancel), then the real terminal run, a live source audit with a
+dead source, and the Agent Skill.
 
 ## CEO-gated steps (do NOT do as agent)
 

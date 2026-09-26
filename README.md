@@ -9,7 +9,7 @@ Built for the **Alexa+ track** of the Amazon *Build, Ship, Shape* hackathon
 (2026), on the two open standards the track names: **MCP Streamable HTTP
 transport** (spec 2025-11-25) and **Agent Skills**.
 
-**Watch the demo (44 s): https://www.youtube.com/watch?v=S7dwUlteIRA**
+**Watch the demo (70 s): https://www.youtube.com/watch?v=AegpNiIJ-F8**
 
 ```
  you (voice)          simulated Alexa+              Fleetline MCP server            agent fleet
